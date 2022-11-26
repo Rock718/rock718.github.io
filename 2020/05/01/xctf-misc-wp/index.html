@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>xctf-misc-wp | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.low 通过python提取图像的最低有效位组合成图像，发现是二维码。   from PIL import Image  img &#x3D; Image.open(&quot;&#x2F;root&#x2F;Downloads&#x2F;low.bmp&quot;) lsbImg &#x3D; img.copy() pix &#x3D; lsbImg.load()  width &#x3D; img.width height &#x3D; img.height  for">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xctf-misc-wp">
+<meta property="og:url" content="https://rock718.github.io.git/2020/05/01/xctf-misc-wp/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="1.low 通过python提取图像的最低有效位组合成图像，发现是二维码。   from PIL import Image  img &#x3D; Image.open(&quot;&#x2F;root&#x2F;Downloads&#x2F;low.bmp&quot;) lsbImg &#x3D; img.copy() pix &#x3D; lsbImg.load()  width &#x3D; img.width height &#x3D; img.height  for">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-01T04:04:30.000Z">
+<meta property="article:modified_time" content="2020-05-03T08:35:30.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="misc">
+<meta property="article:tag" content="xctf">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-xctf-misc-wp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      xctf-misc-wp
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-low"><a href="#1-low" class="headerlink" title="1.low"></a>1.low</h1>
+<p>通过python提取图像的最低有效位组合成图像，发现是二维码。</p>
+
+
+<pre><code>from PIL import Image
+
+img = Image.open(&quot;/root/Downloads/low.bmp&quot;)
+lsbImg = img.copy()
+pix = lsbImg.load()
+
+width = img.width
+height = img.height
+
+for w in range(width):
+    for h in range(height):
+        if pix[w,h] &amp; 0x01 == 1:
+            pix[w, h] = 0
+        else:
+            pix[w, h] = 255
+lsbImg.save(&quot;/root/Downloads/_low.bmp&quot;)
+</code></pre>
+<h1 id="2-信号不好先挂了"><a href="#2-信号不好先挂了" class="headerlink" title="2.信号不好先挂了"></a>2.信号不好先挂了</h1>
+<p>使用zsteg检测图像，发现存在lsb隐写。使用Stegsolve提取隐藏的压缩文件，解压出一张同样的png图像<code>pen.png</code>。<br>之后思路中断，查找答案后得知可以从盲水印方向考虑。<br>使用<code>BlindWaterMark</code>提取盲水印<br>    .&#x2F;bwm.py decode apple.png pen.png applepen.png</p>
+
+<h1 id="3-Ditf"><a href="#3-Ditf" class="headerlink" title="3.Ditf"></a>3.Ditf</h1><p>打开图像发现报CRC32校验错误，判断图像人为修改过高度。<br>尝试使用脚本爆破正确高度，未果。</p>
+<pre><code>import binascii, struct
+
+fObj = open(&quot;/root/Downloads/e02c9de40be145dba6baa80ef1d270ba.png&quot;, &quot;rb&quot;)
+png = fObj.read()
+fObj.close()
+crcOri =int.from_bytes(png[0x1D:0x20],byteorder=&#39;big&#39;,signed=False)
+nowHeight = int.from_bytes(png[0x10:0x14],byteorder=&#39;big&#39;,signed=False)
+maxHeight = 4096
+
+for h in range(nowHeight, maxHeight):
+    data = png[0xC:0x14] + struct.pack(&quot;&gt;i&quot;,h) + png[0x18:0x1D]
+    crcNew = binascii.crc32(data)
+    if crcNew == crcOri:
+        print(h)
+        break
+</code></pre>
+<p>尝试使用<code>tweakpng</code>手动修改高度，成功看到隐藏信息。</p>
+
+<p>使用binwalk检测图像，发现隐藏rar文件，使用foremost提取。猜测密码即为隐藏信息。成功解压。<br>解压后分析流量，导出http对象，找到可疑字符串。<br>    <code>&lt;html&gt;     &lt;head&gt;         &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;     &lt;/head&gt;     &lt;body&gt;         &lt;img src=&quot;/kiss.png&quot; /&gt;     ZmxhZ3tPel80bmRfSGlyMF9sb3YzX0ZvcjN2ZXJ9     &lt;/body&gt;     &lt;/html&gt;</code><br>base64解码，得到flag。</p>
+<h3 id="4-签到题"><a href="#4-签到题" class="headerlink" title="4.签到题"></a>4.签到题</h3><p>base64-&gt;栅栏-&gt;凯撒</p>
+<h3 id="5-Excaliflag"><a href="#5-Excaliflag" class="headerlink" title="5.Excaliflag"></a>5.Excaliflag</h3><p>Stegsolve查看蓝色通道</p>
+
+<h3 id="6-Avatar"><a href="#6-Avatar" class="headerlink" title="6.Avatar"></a>6.Avatar</h3><p>使用<code>outguess</code>提取图像中的隐藏信息。<br><a target="_blank" rel="noopener" href="https://github.com/resurrecting-open-source-projects/outguess">https://github.com/resurrecting-open-source-projects/outguess.git</a></p>
+<pre><code>outguess -r 035bfaa85410429495786d8ea6ecd296.jpg -t hi.txt
+</code></pre>
+<h3 id="7-Miscellaneous-200"><a href="#7-Miscellaneous-200" class="headerlink" title="7.Miscellaneous-200"></a>7.Miscellaneous-200</h3><p>初步判断txt文件内为61366行RGB像素值，编写脚本判断图像长宽并绘制图像。</p>
+<pre><code>from PIL import Image
+
+fObj = open(&quot;/root/Downloads/62f4ea780ecf4e6bbef5f40d674ec073.txt&quot;, &quot;r&quot;)
+pixList = []
+for line in fObj.readlines():
+    line = line[:-1:]
+    pix = line.split(&#39;,&#39;)
+    _pix = []
+    for p in pix:
+        _pix.append(int(p))
+    pixList.append(tuple(_pix))
+fObj.close()
+
+length = len(pixList)
+width = int(length ** 0.5)
+wList = []
+hList = []
+
+for w in range(3,width):
+    if length // w * w == length:
+        wList.append(w)
+        hList.append(length // w)
+
+for i in range(len(wList)):
+    img = Image.new(&quot;RGB&quot;, (wList[i], hList[i]))
+    for j in range(wList[i]):
+        for k in range(hList[i]):
+            img.putpixel((j,k), pixList[j*hList[i]+k])
+    img.save(&quot;/root/Downloads/&quot; + str(wList[i]) + &quot;*&quot; + str(hList[i]) + &quot;.png&quot;)
+
+for i in range(len(hList)):
+    img = Image.new(&quot;RGB&quot;, (hList[i], wList[i]))
+    for j in range(hList[i]):
+        for k in range(wList[i]):
+            img.putpixel((j,k), pixList[j*wList[i]+k])
+    img.save(&quot;/root/Downloads/&quot; + str(hList[i]) + &quot;*&quot; + str(wList[i]) + &quot;.png&quot;)
+</code></pre>
+<p>其中得到503×122的正确图像。</p>
+
+
+<p>PIL相关知识链接<br>1.<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangziju/article/details/79123275">Python图像处理PIL各模块详细介绍</a><br>2.<a target="_blank" rel="noopener" href="https://blog.csdn.net/dxyna/article/details/81120311">PIL图像处理之Image</a></p>
+<h3 id="8-Miscellaneous-300"><a href="#8-Miscellaneous-300" class="headerlink" title="8.Miscellaneous-300"></a>8.Miscellaneous-300</h3><p>发现zip压缩包内的文件名即为解压密码，编写脚本解压。</p>
+<pre><code>import zipfile
+
+filePath = &quot;/root/Downloads/zip/&quot;
+zipFileName = &quot;/root/Downloads/f932f55b83fa493ab024390071020088.zip&quot;
+
+zipFile = zipfile.ZipFile(zipFileName)
+fileName = zipFile.namelist()[0]
+zipFile.extractall(filePath, pwd=fileName.split(&quot;.&quot;)[0].encode())
+while fileName != &quot;73168.zip&quot;:
+    zipFileName = filePath + fileName
+    zipFile = zipfile.ZipFile(zipFileName)
+    fileName = zipFile.namelist()[0]
+    print(fileName)
+    zipFile.extractall(filePath, pwd=fileName.split(&quot;.&quot;)[0].encode())
+</code></pre>
+<p>解压出1500多个压缩包后，解压报错，发现最新的压缩包内含mess.wav。<br>尝试爆破该压缩包，发现密码为5位。<br>用<code>Audacity</code>分析解压出的mess.wav，频谱图中含有flag。</p>
+
+
+<h3 id="9-Py-Py-Py"><a href="#9-Py-Py-Py" class="headerlink" title="9.Py-Py-Py"></a>9.Py-Py-Py</h3><p>查阅wp知道，此题目通过将payload隐藏在pyc字节码文件中，且该隐藏方式不会更改pyc文件的运行和大小。</p>
+<pre><code>./stegosaurus ~/Downloads/58cadd8d8269455ebc94690fd777c34a.pyc -x
+</code></pre>
+<p>相关资料：<br>1.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/51226097">一文让你完全弄懂Stegosaurus</a><br>2.<a target="_blank" rel="noopener" href="https://github.com/AngelKitty/stegosaurus">https://github.com/AngelKitty/stegosaurus.git</a></p>
+<h3 id="10-传感器1"><a href="#10-传感器1" class="headerlink" title="10.传感器1"></a>10.传感器1</h3><p>查阅wp得知，此题考察曼彻斯特编码与差分曼彻斯特编码。编写脚本尝试解码。</p>
+<pre><code>def decode(cipherText):
+    c = bin(int(cipherText[2:],base=16))
+    d = &quot;&quot;
+
+    i = 2
+    while i &lt; len(c):
+        if c[i] != c[i-1]:
+            d += &quot;0&quot;
+        else:
+            d += &quot;1&quot;
+        i += 2
+
+    return int(d, base=2)
+
+cipherText1 = &quot;3EAAAAA56A69AA55A95995A569AA95565556&quot;
+cipherText2 = &quot;3EAAAAA56A69AA556A965A5999596AA95656&quot;
+
+print(&quot;%0x&quot; % decode(cipherText1))
+print(&quot;%0x&quot; % decode(cipherText2))
+</code></pre>
+<p>相关资料：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/BinB-W/p/5045918.html">曼切斯特编码和差分曼切斯特编码</a></p>
+<h3 id="11-mysql"><a href="#11-mysql" class="headerlink" title="11.mysql"></a>11.mysql</h3><p>不是特别懂<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/vhkjhwbs/article/details/100775409#36%EF%BC%8Cmysql">攻防世界———MISC 高手区题解</a></p>
+<h3 id="12-恶臭的数据包"><a href="#12-恶臭的数据包" class="headerlink" title="12.恶臭的数据包"></a>12.恶臭的数据包</h3><h3 id="持续更新中……"><a href="#持续更新中……" class="headerlink" title="持续更新中……"></a>持续更新中……</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2020/05/01/xctf-misc-wp/" data-id="cl9y4cx9q005c24fy66x23vrh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/misc/" rel="tag">misc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xctf/" rel="tag">xctf</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/28/nmap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          nmap-auto-test
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/04/PNG-write-payload/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">PNG-write-payload</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

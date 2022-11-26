@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>nmap-auto-test | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="以下脚本实现了对于nmap端口扫描以-oN保存的扫描结果进行自动web连接尝试的功能。  会自动过滤掉开放超过800个端口以上的ip（可能为蜜罐，或是防火墙设置了特殊的响应规则）  连接超时时间设置为5秒  对同一个端口同时尝试http和https连接   import requests   requests.packages.urllib3.disable_warnings(requests.p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nmap-auto-test">
+<meta property="og:url" content="https://rock718.github.io.git/2020/05/28/nmap/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="以下脚本实现了对于nmap端口扫描以-oN保存的扫描结果进行自动web连接尝试的功能。  会自动过滤掉开放超过800个端口以上的ip（可能为蜜罐，或是防火墙设置了特殊的响应规则）  连接超时时间设置为5秒  对同一个端口同时尝试http和https连接   import requests   requests.packages.urllib3.disable_warnings(requests.p">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-28T12:13:52.000Z">
+<meta property="article:modified_time" content="2020-05-28T12:13:52.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="nmap">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-nmap" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      nmap-auto-test
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>以下脚本实现了对于nmap端口扫描以-oN保存的扫描结果进行自动web连接尝试的功能。</p>
+<ul>
+<li><p>会自动过滤掉开放超过800个端口以上的ip（可能为蜜罐，或是防火墙设置了特殊的响应规则）</p>
+</li>
+<li><p>连接超时时间设置为5秒</p>
+</li>
+<li><p>对同一个端口同时尝试http和https连接</p>
+<p>  import requests</p>
+<p>  requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)</p>
+<p>  fileList &#x3D; [“result1.log”, “result2.log”]<br>  basePath &#x3D; “&#x2F;root&#x2F;Downloads&#x2F;“</p>
+<p>  ipInfoList &#x3D; []<br>  ipCount &#x3D; 0<br>  portCount &#x3D; 0</p>
+<p>  for f in fileList:<br>  fObj &#x3D; open(basePath+f, “r”)<br>  text &#x3D; fObj.read()<br>  fObj.close()<br>  ipInfoList &#x3D; text.split(“Nmap scan report for “)[1:]<br>  if len(ipInfoList) !&#x3D; 0:<br>      ipInfoList[len(ipInfoList)-1] &#x3D; ipInfoList[len(ipInfoList)-1].split(“# Nmap done at “)[0]<br><br>      for info in ipInfoList:<br>          # print(“has requested %d ip %d port” % (ipCount, portCount), end&#x3D;”\r”)<br>          ipCount +&#x3D; 1<br>          ip &#x3D; info.split(“Host is up “)[0].strip()<br>          ports &#x3D; info.split(“SERVICE”)[1].strip()<br>          portList &#x3D; ports.split(‘\n’)<br>          if len(portList) &lt; 800:<br>              for p in portList:<br>                  if p.find(“open”) !&#x3D; -1:<br>                      portCount +&#x3D; 1<br>                      port &#x3D; p.split(“&#x2F;“)[0]<br>                      print(“Connecting %15s:%-5s\tHas tried %d ip %d port.” % (ip, port, ipCount, portCount), end&#x3D;”\r”)<br>                      try:<br>                          req &#x3D; requests.get(“http:&#x2F;&#x2F;“+ ip + “:” + port, timeout&#x3D;5)<br>                          print(“\n”+ ip+”:”+ port)<br>                      except:<br>                          try:<br>                              req &#x3D; requests.get(“https:&#x2F;&#x2F;“+ ip + “:” + port, verify&#x3D;False , timeout&#x3D;5)<br>                              print(“\n”+ ip+”:”+ port)<br>                          except Exception as e:<br>                              print(end&#x3D;’’)<br>                              # print(e)<br>                      # finally:<br>                      # 	print(“has requested %d ip %d port” % (ipCount, portCount), end&#x3D;”\r”)</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2020/05/28/nmap/" data-id="cl9y4cx9k001x24fy0y7e54xw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nmap/" rel="tag">nmap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/05/16/MRCTF2020-%E5%A5%97%E5%A8%83-wp/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          [MRCTF2020]套娃-wp
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/01/xctf-misc-wp/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">xctf-misc-wp</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

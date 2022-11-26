@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>再“见”hexo——重新理解hexo | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="再“见”hexo——重新理解hexo从两年前初次接触hexo，到工作之后再次拾起hexo并解决了一些坑。我想重新再梳理一下hexo的用法和安装中的坑。1.Node.js npm hexo他们是什么关系？(1)Nodejs官方解释：Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时。简单的说 Node.js 就是运行在服务端的 JavaScript。我目前的理解是，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="再“见”hexo——重新理解hexo">
+<meta property="og:url" content="https://rock718.github.io.git/2019/11/28/%E5%86%8D%E2%80%9C%E8%A7%81%E2%80%9Dhexo%E2%80%94%E2%80%94%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3hexo/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="再“见”hexo——重新理解hexo从两年前初次接触hexo，到工作之后再次拾起hexo并解决了一些坑。我想重新再梳理一下hexo的用法和安装中的坑。1.Node.js npm hexo他们是什么关系？(1)Nodejs官方解释：Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时。简单的说 Node.js 就是运行在服务端的 JavaScript。我目前的理解是，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-28T12:23:47.000Z">
+<meta property="article:modified_time" content="2019-11-28T13:25:08.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-再“见”hexo——重新理解hexo" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      再“见”hexo——重新理解hexo
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="再“见”hexo——重新理解hexo"><a href="#再“见”hexo——重新理解hexo" class="headerlink" title="再“见”hexo——重新理解hexo"></a>再“见”hexo——重新理解hexo</h1><h3 id="从两年前初次接触hexo，到工作之后再次拾起hexo并解决了一些坑。我想重新再梳理一下hexo的用法和安装中的坑。"><a href="#从两年前初次接触hexo，到工作之后再次拾起hexo并解决了一些坑。我想重新再梳理一下hexo的用法和安装中的坑。" class="headerlink" title="从两年前初次接触hexo，到工作之后再次拾起hexo并解决了一些坑。我想重新再梳理一下hexo的用法和安装中的坑。"></a><em>从两年前初次接触hexo，到工作之后再次拾起hexo并解决了一些坑。我想重新再梳理一下hexo的用法和安装中的坑。</em></h3><h2 id="1-Node-js-npm-hexo他们是什么关系？"><a href="#1-Node-js-npm-hexo他们是什么关系？" class="headerlink" title="1.Node.js npm hexo他们是什么关系？"></a>1.Node.js npm hexo他们是什么关系？</h2><h3 id="1-Nodejs"><a href="#1-Nodejs" class="headerlink" title="(1)Nodejs"></a>(1)Nodejs</h3><h4 id="官方解释：Node-js-是一个基于-Chrome-V8-引擎的-JavaScript-运行时。"><a href="#官方解释：Node-js-是一个基于-Chrome-V8-引擎的-JavaScript-运行时。" class="headerlink" title="官方解释：Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时。"></a>官方解释：Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时。</h4><h4 id="简单的说-Node-js-就是运行在服务端的-JavaScript。"><a href="#简单的说-Node-js-就是运行在服务端的-JavaScript。" class="headerlink" title="简单的说 Node.js 就是运行在服务端的 JavaScript。"></a>简单的说 Node.js 就是运行在服务端的 JavaScript。</h4><h4 id="我目前的理解是，对于hexo来说，Node-js是将hexo的markdown文本编写成html等文件的编译器。"><a href="#我目前的理解是，对于hexo来说，Node-js是将hexo的markdown文本编写成html等文件的编译器。" class="headerlink" title="我目前的理解是，对于hexo来说，Node.js是将hexo的markdown文本编写成html等文件的编译器。"></a>我目前的理解是，对于hexo来说，Node.js是将hexo的markdown文本编写成html等文件的编译器。</h4><h3 id="2-npm"><a href="#2-npm" class="headerlink" title="(2)npm"></a>(2)npm</h3><h4 id="npm-是-JavaScript-世界的包管理工具。"><a href="#npm-是-JavaScript-世界的包管理工具。" class="headerlink" title="npm 是 JavaScript 世界的包管理工具。"></a>npm 是 JavaScript 世界的包管理工具。</h4><h4 id="我的理解，npm是用于安装各种第三方JavaScript模块的软件管理器。类似于Ubuntu-x2F-Debian系统中的apt包管理器或者是CentOS系统中的yum。"><a href="#我的理解，npm是用于安装各种第三方JavaScript模块的软件管理器。类似于Ubuntu-x2F-Debian系统中的apt包管理器或者是CentOS系统中的yum。" class="headerlink" title="我的理解，npm是用于安装各种第三方JavaScript模块的软件管理器。类似于Ubuntu&#x2F;Debian系统中的apt包管理器或者是CentOS系统中的yum。"></a>我的理解，npm是用于安装各种第三方JavaScript模块的软件管理器。类似于Ubuntu&#x2F;Debian系统中的apt包管理器或者是CentOS系统中的yum。</h4><h3 id="3-hexo"><a href="#3-hexo" class="headerlink" title="(3)hexo"></a>(3)hexo</h3><h4 id="官方解释：Hexo-是一个快速、简洁且高效的博客框架。Hexo-使用-Markdown-或其他渲染引擎-解析文章，在几秒内，即可利用靓丽的主题生成静态网页。"><a href="#官方解释：Hexo-是一个快速、简洁且高效的博客框架。Hexo-使用-Markdown-或其他渲染引擎-解析文章，在几秒内，即可利用靓丽的主题生成静态网页。" class="headerlink" title="官方解释：Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown(或其他渲染引擎)解析文章，在几秒内，即可利用靓丽的主题生成静态网页。"></a>官方解释：Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown(或其他渲染引擎)解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</h4><h4 id="我的简单理解：hexo可以让你用Markdown编写静态博客。"><a href="#我的简单理解：hexo可以让你用Markdown编写静态博客。" class="headerlink" title="我的简单理解：hexo可以让你用Markdown编写静态博客。"></a>我的简单理解：hexo可以让你用Markdown编写静态博客。</h4><h2 id="2-如何安装hexo"><a href="#2-如何安装hexo" class="headerlink" title="2.如何安装hexo"></a>2.如何安装hexo</h2><h3 id="1-构建本地博客源码仓库"><a href="#1-构建本地博客源码仓库" class="headerlink" title="(1)构建本地博客源码仓库"></a>(1)构建本地博客源码仓库</h3><h4 id="最佳方案，你需要参考hexo官网的安装教程。我的经验是不同的操作系统安装方法不一样，请务必尽量遵循官网的安装建议，否则不一定哪里会出现问题。"><a href="#最佳方案，你需要参考hexo官网的安装教程。我的经验是不同的操作系统安装方法不一样，请务必尽量遵循官网的安装建议，否则不一定哪里会出现问题。" class="headerlink" title="最佳方案，你需要参考hexo官网的安装教程。我的经验是不同的操作系统安装方法不一样，请务必尽量遵循官网的安装建议，否则不一定哪里会出现问题。"></a>最佳方案，你需要参考<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">hexo官网的安装教程</a>。我的经验是不同的操作系统安装方法不一样，请务必尽量遵循官网的安装建议，否则不一定哪里会出现问题。</h4><h3 id="2-生成远程博客托管仓库"><a href="#2-生成远程博客托管仓库" class="headerlink" title="(2)生成远程博客托管仓库"></a>(2)生成远程博客托管仓库</h3><h4 id="你可以选择托管到github或coding上或者是你自己的主机上，这一点网上的许多教程都有说过，这里不再赘述。"><a href="#你可以选择托管到github或coding上或者是你自己的主机上，这一点网上的许多教程都有说过，这里不再赘述。" class="headerlink" title="你可以选择托管到github或coding上或者是你自己的主机上，这一点网上的许多教程都有说过，这里不再赘述。"></a>你可以选择托管到github或coding上或者是你自己的主机上，这一点网上的许多教程都有说过，这里不再赘述。</h4><h2 id="3-一些坑"><a href="#3-一些坑" class="headerlink" title="3.一些坑"></a>3.一些坑</h2><h3 id="1-如果你发现hexo生成文件后无法开启本地模拟服务器，即hexo-s无法识别且hexo的帮助中没有server指令。那么你可能没有安装hexo-server。Hexo-3-0-把服务器独立成了个别模块，你必须先安装hexo-server才能使用。"><a href="#1-如果你发现hexo生成文件后无法开启本地模拟服务器，即hexo-s无法识别且hexo的帮助中没有server指令。那么你可能没有安装hexo-server。Hexo-3-0-把服务器独立成了个别模块，你必须先安装hexo-server才能使用。" class="headerlink" title="(1)如果你发现hexo生成文件后无法开启本地模拟服务器，即hexo s无法识别且hexo的帮助中没有server指令。那么你可能没有安装hexo-server。Hexo 3.0 把服务器独立成了个别模块，你必须先安装hexo-server才能使用。"></a>(1)如果你发现hexo生成文件后无法开启本地模拟服务器，即<code>hexo s</code>无法识别且hexo的帮助中没有server指令。那么你可能没有安装<code>hexo-server</code>。Hexo 3.0 把服务器独立成了个别模块，你必须先安装<code>hexo-server</code>才能使用。</h3><pre><code>$ npm install hexo-server --save
+</code></pre>
+<h3 id="安装完成后，输入以下命令以启动服务器，你的网站会在http-localhost-4000下启动。"><a href="#安装完成后，输入以下命令以启动服务器，你的网站会在http-localhost-4000下启动。" class="headerlink" title="安装完成后，输入以下命令以启动服务器，你的网站会在http://localhost:4000下启动。"></a>安装完成后，输入以下命令以启动服务器，你的网站会在<code>http://localhost:4000</code>下启动。</h3><pre><code>$ hexo server
+</code></pre>
+<h3 id="如果你想要更改端口，或是在执行时遇到了EADDRINUSE错误，可以在执行时使用-p选项指定其他端口，如下："><a href="#如果你想要更改端口，或是在执行时遇到了EADDRINUSE错误，可以在执行时使用-p选项指定其他端口，如下：" class="headerlink" title="如果你想要更改端口，或是在执行时遇到了EADDRINUSE错误，可以在执行时使用-p选项指定其他端口，如下："></a>如果你想要更改端口，或是在执行时遇到了<code>EADDRINUSE</code>错误，可以在执行时使用<code>-p</code>选项指定其他端口，如下：</h3><pre><code>$ hexo server -p 5000
+</code></pre>
+<h3 id="2-在输入hexo-deploy后，hexo报如下错误："><a href="#2-在输入hexo-deploy后，hexo报如下错误：" class="headerlink" title="(2)在输入hexo deploy后，hexo报如下错误："></a>(2)在输入<code>hexo deploy</code>后，hexo报如下错误：</h3><pre><code>ERROR Deployer not found: git
+</code></pre>
+<h3 id="这是由于你没有安装hexo-deployer，执行以下命令来进行安装："><a href="#这是由于你没有安装hexo-deployer，执行以下命令来进行安装：" class="headerlink" title="这是由于你没有安装hexo-deployer，执行以下命令来进行安装："></a>这是由于你没有安装<code>hexo-deployer</code>，执行以下命令来进行安装：</h3><pre><code>$ npm install hexo-deployer-git --save
+</code></pre>
+<h3 id="3-在在输入hexo-deploy后，hexo提示："><a href="#3-在在输入hexo-deploy后，hexo提示：" class="headerlink" title="(3)在在输入hexo deploy后，hexo提示："></a>(3)在在输入<code>hexo deploy</code>后，hexo提示：</h3><pre><code>You should configure deployment settings in _config.yml first!
+</code></pre>
+<h3 id="查看一下你的hexo根目录下的-config-yml中deploy：的配置是否正确。应类似于以下内容："><a href="#查看一下你的hexo根目录下的-config-yml中deploy：的配置是否正确。应类似于以下内容：" class="headerlink" title="查看一下你的hexo根目录下的_config.yml中deploy：的配置是否正确。应类似于以下内容："></a>查看一下你的hexo根目录下的<code>_config.yml</code>中<code>deploy：</code>的配置是否正确。应类似于以下内容：</h3><pre><code>deploy:
+type: git
+repo: git@github.com:Rock718/rock718.github.io.git
+</code></pre>
+<h3 id="注意：这里的type-和repo-后面至少应该有一个空格。如果你有多个repo-，样子应该类似这样："><a href="#注意：这里的type-和repo-后面至少应该有一个空格。如果你有多个repo-，样子应该类似这样：" class="headerlink" title="注意：这里的type:和repo:后面至少应该有一个空格。如果你有多个repo:，样子应该类似这样："></a>注意：这里的<code>type:</code>和<code>repo:</code>后面至少应该有一个空格。如果你有多个<code>repo:</code>，样子应该类似这样：</h3><pre><code>deploy:
+type: git
+repo:
+      github: git@github.com:Rock718/rock718.github.io.git
+      coding: git@coding.com:**********
+</code></pre>
+<h3 id="一定要注意缩进的问题"><a href="#一定要注意缩进的问题" class="headerlink" title="一定要注意缩进的问题"></a>一定要注意缩进的问题</h3><h3 id="4-如果你想在hexo中插入图片，建议参考官网的推荐，使用形如："><a href="#4-如果你想在hexo中插入图片，建议参考官网的推荐，使用形如：" class="headerlink" title="(4)如果你想在hexo中插入图片，建议参考官网的推荐，使用形如："></a>(4)如果你想在hexo中插入图片，建议参考<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders">官网的推荐</a>，使用形如：</h3><pre><code>&#123;% asset_img example.jpg This is an example image %&#125;
+</code></pre>
+<h3 id="当然，在这之前你需要配置hexo根目录下的-config-yml中post-asset-folder-为true"><a href="#当然，在这之前你需要配置hexo根目录下的-config-yml中post-asset-folder-为true" class="headerlink" title="当然，在这之前你需要配置hexo根目录下的_config.yml中post_asset_folder: 为true"></a>当然，在这之前你需要配置hexo根目录下的<code>_config.yml</code>中<code>post_asset_folder: </code>为<code>true</code></h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2019/11/28/%E5%86%8D%E2%80%9C%E8%A7%81%E2%80%9Dhexo%E2%80%94%E2%80%94%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3hexo/" data-id="cl9y4cx9r005k24fy2id36hw5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/21/CG-CTF-wp/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          CG-CTF_解题思路
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/25/writeup-%E2%80%9C%E7%99%BE%E5%BA%A6%E6%9D%AF%E2%80%9DCTF%E6%AF%94%E8%B5%9B-%E4%B9%9D%E6%9C%88%E5%9C%BA-SQLi/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">writeup-“百度杯”CTF比赛-九月场-SQLi</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

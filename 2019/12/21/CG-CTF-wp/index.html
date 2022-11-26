@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>CG-CTF_解题思路 | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、Misc1.丘比龙De女神gif图片中嵌套去掉头部的加密zip压缩包。2.Remove Boyfriend流量分析中的导出两个py代码和jpg图片，将图片中的字符代入py代码执行，得出结果3.MD5通过py脚本中的hashlib库来生成md5值，通过re库来匹配给定md5值。注意md5的update()方法是不断将新的字符串拼接到之前的字符串后计算md5值，不是使用新字符串来计算md5值。im">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CG-CTF_解题思路">
+<meta property="og:url" content="https://rock718.github.io.git/2019/12/21/CG-CTF-wp/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="一、Misc1.丘比龙De女神gif图片中嵌套去掉头部的加密zip压缩包。2.Remove Boyfriend流量分析中的导出两个py代码和jpg图片，将图片中的字符代入py代码执行，得出结果3.MD5通过py脚本中的hashlib库来生成md5值，通过re库来匹配给定md5值。注意md5的update()方法是不断将新的字符串拼接到之前的字符串后计算md5值，不是使用新字符串来计算md5值。im">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-21T14:30:49.000Z">
+<meta property="article:modified_time" content="2019-12-24T12:29:21.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CG-CTF-wp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CG-CTF_解题思路
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="一、Misc"><a href="#一、Misc" class="headerlink" title="一、Misc"></a>一、Misc</h1><h2 id="1-丘比龙De女神"><a href="#1-丘比龙De女神" class="headerlink" title="1.丘比龙De女神"></a>1.丘比龙De女神</h2><h3 id="gif图片中嵌套去掉头部的加密zip压缩包。"><a href="#gif图片中嵌套去掉头部的加密zip压缩包。" class="headerlink" title="gif图片中嵌套去掉头部的加密zip压缩包。"></a>gif图片中嵌套去掉头部的加密zip压缩包。</h3><h2 id="2-Remove-Boyfriend"><a href="#2-Remove-Boyfriend" class="headerlink" title="2.Remove Boyfriend"></a>2.Remove Boyfriend</h2><h3 id="流量分析中的导出两个py代码和jpg图片，将图片中的字符代入py代码执行，得出结果"><a href="#流量分析中的导出两个py代码和jpg图片，将图片中的字符代入py代码执行，得出结果" class="headerlink" title="流量分析中的导出两个py代码和jpg图片，将图片中的字符代入py代码执行，得出结果"></a>流量分析中的导出两个py代码和jpg图片，将图片中的字符代入py代码执行，得出结果</h3><h2 id="3-MD5"><a href="#3-MD5" class="headerlink" title="3.MD5"></a>3.MD5</h2><h3 id="通过py脚本中的hashlib库来生成md5值，通过re库来匹配给定md5值。注意md5的update-方法是不断将新的字符串拼接到之前的字符串后计算md5值，不是使用新字符串来计算md5值。"><a href="#通过py脚本中的hashlib库来生成md5值，通过re库来匹配给定md5值。注意md5的update-方法是不断将新的字符串拼接到之前的字符串后计算md5值，不是使用新字符串来计算md5值。" class="headerlink" title="通过py脚本中的hashlib库来生成md5值，通过re库来匹配给定md5值。注意md5的update()方法是不断将新的字符串拼接到之前的字符串后计算md5值，不是使用新字符串来计算md5值。"></a>通过py脚本中的hashlib库来生成md5值，通过re库来匹配给定md5值。<em><strong>注意md5的update()方法是不断将新的字符串拼接到之前的字符串后计算md5值，不是使用新字符串来计算md5值。</strong></em></h3><pre><code>import hashlib
+import re
+
+charList = &#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#39;
+pattern = r&quot;e9032\w\w\wda\w\w\w08\w\w\w\w911513\w0\w\w\wa2&quot;
+plainText1 = &quot;TASC&quot;
+plainText2 = &quot;O3RJMV&quot;
+plainText3 = &quot;WDJKX&quot;
+plainText4 = &quot;ZM&quot;
+
+for ch1 in charList:
+    for ch2 in charList:
+        for ch3 in charList:
+            string = plainText1+ch1+plainText2+ch2+plainText3+ch3+plainText4
+            md5 = hashlib.md5(string.encode()).hexdigest()
+            if re.match(pattern, md5):
+                print(md5)
+                exit(0)
+</code></pre>
+<h1 id="二、Web"><a href="#二、Web" class="headerlink" title="二、Web"></a>二、Web</h1><h2 id="1-签到题"><a href="#1-签到题" class="headerlink" title="1.签到题"></a>1.签到题</h2><h3 id="右键查看源码"><a href="#右键查看源码" class="headerlink" title="右键查看源码"></a>右键查看源码</h3><h2 id="2-签到2"><a href="#2-签到2" class="headerlink" title="2.签到2"></a>2.签到2</h2><h3 id="修改输入框字符长度限制，成功提交口令zhimakaimen"><a href="#修改输入框字符长度限制，成功提交口令zhimakaimen" class="headerlink" title="修改输入框字符长度限制，成功提交口令zhimakaimen"></a>修改输入框字符长度限制，成功提交口令<code>zhimakaimen</code></h3><h2 id="3-md5-collision"><a href="#3-md5-collision" class="headerlink" title="3.md5 collision"></a>3.md5 collision</h2><p><a name="collision"></a></p>
+<h3 id="本题利用php弱类型比较。php弱类型总结"><a href="#本题利用php弱类型比较。php弱类型总结" class="headerlink" title="本题利用php弱类型比较。php弱类型总结"></a>本题利用php弱类型比较。<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41617034/article/details/92796769">php弱类型总结</a></h3><h3 id="由于字符串在使用-作为比较符号时，字符串会被转换为数字，故不同的字符串只要转化为的数字的值相等，即可使判断成立。利用python写一个脚本即可找到这样的字符串。"><a href="#由于字符串在使用-作为比较符号时，字符串会被转换为数字，故不同的字符串只要转化为的数字的值相等，即可使判断成立。利用python写一个脚本即可找到这样的字符串。" class="headerlink" title="由于字符串在使用==作为比较符号时，字符串会被转换为数字，故不同的字符串只要转化为的数字的值相等，即可使判断成立。利用python写一个脚本即可找到这样的字符串。"></a>由于字符串在使用<code>==</code>作为比较符号时，字符串会被转换为数字，故不同的字符串只要转化为的数字的值相等，即可使判断成立。利用python写一个脚本即可找到这样的字符串。</h3><pre><code>import hashlib
+import re
+from itertools import permutations
+import time
+
+charList = &#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#39;
+pattern = r&quot;^0e([0-9]&#123;30&#125;)&quot;
+
+startTime = time.time()
+for k in range(2,10):
+    print(&quot;length=%d&quot; %(k),end=&quot;\t&quot;)
+    for item in permutations(charList,k):
+        item=&#39;&#39;.join(item)
+        md5_value = hashlib.md5(item.encode()).hexdigest()
+        if re.match(pattern,md5_value):
+            print(item)
+            print(md5_value)
+            exit(0)
+    print(&quot;Time used :%fs&quot; %(time.time()-startTime))
+</code></pre>
+<h2 id="4-这题不是WEB"><a href="#4-这题不是WEB" class="headerlink" title="4.这题不是WEB"></a>4.这题不是WEB</h2><h3 id="另存题目中的图片，用Stegsolve中的File-Formart分析。"><a href="#另存题目中的图片，用Stegsolve中的File-Formart分析。" class="headerlink" title="另存题目中的图片，用Stegsolve中的File Formart分析。"></a>另存题目中的图片，用<code>Stegsolve</code>中的<code>File Formart</code>分析。</h3><h2 id="5-文件包含"><a href="#5-文件包含" class="headerlink" title="5.文件包含"></a>5.文件包含</h2><h3 id="用php-filter-convert-base64-encode-resource-index-php即可解出。"><a href="#用php-filter-convert-base64-encode-resource-index-php即可解出。" class="headerlink" title="用php://filter/convert.base64-encode/resource=index.php即可解出。"></a>用<code>php://filter/convert.base64-encode/resource=index.php</code>即可解出。</h3><h2 id="6-AAencode"><a href="#6-AAencode" class="headerlink" title="6.AAencode"></a>6.AAencode</h2><h3 id="用burp抓取homura-cc-CGfiles-aaencode-txt把里面的内容放到AAEncode解码器中。"><a href="#用burp抓取homura-cc-CGfiles-aaencode-txt把里面的内容放到AAEncode解码器中。" class="headerlink" title="用burp抓取homura.cc/CGfiles/aaencode.txt把里面的内容放到AAEncode解码器中。"></a>用<code>burp</code>抓取<code>homura.cc/CGfiles/aaencode.txt</code>把里面的内容放到AAEncode解码器中。</h3><h2 id="7-单身二十年"><a href="#7-单身二十年" class="headerlink" title="7.单身二十年"></a>7.单身二十年</h2><h3 id="用burp抓取请求，发现页面从-web8-search-key-php通过-lt-script-gt-window-location-quot-no-key-is-here-forever-php-quot-lt-script-gt-跳转到了-web8-no-key-is-here-forever-php。flag隐藏在-web8-search-key-php中。"><a href="#用burp抓取请求，发现页面从-web8-search-key-php通过-lt-script-gt-window-location-quot-no-key-is-here-forever-php-quot-lt-script-gt-跳转到了-web8-no-key-is-here-forever-php。flag隐藏在-web8-search-key-php中。" class="headerlink" title="用burp抓取请求，发现页面从/web8/search_key.php通过&lt;script&gt;window.location=&quot;./no_key_is_here_forever.php&quot;; &lt;/script&gt;跳转到了/web8/no_key_is_here_forever.php。flag隐藏在/web8/search_key.php中。"></a>用<code>burp</code>抓取请求，发现页面从<code>/web8/search_key.php</code>通过<code>&lt;script&gt;window.location=&quot;./no_key_is_here_forever.php&quot;; &lt;/script&gt;</code>跳转到了<code>/web8/no_key_is_here_forever.php</code>。flag隐藏在<code>/web8/search_key.php</code>中。</h3><h2 id="8-单身一百年也没用"><a href="#8-单身一百年也没用" class="headerlink" title="8.单身一百年也没用"></a>8.单身一百年也没用</h2><h3 id="这里的flag隐藏在index-php的response的头部"><a href="#这里的flag隐藏在index-php的response的头部" class="headerlink" title="这里的flag隐藏在index.php的response的头部"></a>这里的flag隐藏在<code>index.php</code>的response的头部</h3><h2 id="9-php-decode"><a href="#9-php-decode" class="headerlink" title="9.php decode"></a>9.php decode</h2><h3 id="直接将给出的php代码运行，或是将编码的shell解码出来打印，都可以看到flag。"><a href="#直接将给出的php代码运行，或是将编码的shell解码出来打印，都可以看到flag。" class="headerlink" title="直接将给出的php代码运行，或是将编码的shell解码出来打印，都可以看到flag。"></a>直接将给出的php代码运行，或是将编码的shell解码出来打印，都可以看到flag。</h3><h2 id="10-COOKIE"><a href="#10-COOKIE" class="headerlink" title="10.COOKIE"></a>10.COOKIE</h2><h3 id="根据提示，用burp抓包，将cookie中的login-0改为login-1。"><a href="#根据提示，用burp抓包，将cookie中的login-0改为login-1。" class="headerlink" title="根据提示，用burp抓包，将cookie中的login=0改为login=1。"></a>根据提示，用burp抓包，将cookie中的<code>login=0</code>改为<code>login=1</code>。</h3><h2 id="11-MYSQL"><a href="#11-MYSQL" class="headerlink" title="11.MYSQL"></a>11.MYSQL</h2><h3 id="题目考察intval-函数，进行查询的-id被intval-转型，但是if语句中的判断条件是直接获取get请求，故尝试使用值大于1024小于1025的小数。"><a href="#题目考察intval-函数，进行查询的-id被intval-转型，但是if语句中的判断条件是直接获取get请求，故尝试使用值大于1024小于1025的小数。" class="headerlink" title="题目考察intval()函数，进行查询的$id被intval()转型，但是if语句中的判断条件是直接获取get请求，故尝试使用值大于1024小于1025的小数。"></a>题目考察<code>intval()</code>函数，进行查询的<code>$id</code>被<code>intval()</code>转型，但是if语句中的判断条件是直接获取get请求，故尝试使用值大于1024小于1025的小数。</h3><h2 id="12-x2F-x00"><a href="#12-x2F-x00" class="headerlink" title="12.&#x2F;x00"></a>12.&#x2F;x00</h2><h3 id="题目考察php中ereg-函数的-00截断漏洞，被匹配的字符串如果包含-00会被截断，后面的字符串不再参与匹配。需要构造"><a href="#题目考察php中ereg-函数的-00截断漏洞，被匹配的字符串如果包含-00会被截断，后面的字符串不再参与匹配。需要构造" class="headerlink" title="题目考察php中ereg()函数的\00截断漏洞，被匹配的字符串如果包含\00会被截断，后面的字符串不再参与匹配。需要构造"></a>题目考察php中<code>ereg()</code>函数的<code>\00</code>截断漏洞，被匹配的字符串如果包含<code>\00</code>会被截断，后面的字符串不再参与匹配。需要构造</h3><pre><code>?nctf=1%00%23biubiubiu
+</code></pre>
+<h3 id="注意这里的-被URL编码为-23是为了不被解析为URL中的锚。"><a href="#注意这里的-被URL编码为-23是为了不被解析为URL中的锚。" class="headerlink" title="注意这里的#被URL编码为%23是为了不被解析为URL中的锚。"></a>注意这里的<code>#</code>被URL编码为<code>%23</code>是为了不被解析为URL中的<code>锚</code>。</h3><h2 id="13-GBK-Injection"><a href="#13-GBK-Injection" class="headerlink" title="13.GBK Injection"></a>13.GBK Injection</h2><h3 id="利用常见的宽字节注入漏洞，注意本题过滤了where子句中的-39-，可用hex编码绕过。或者直接用sqlmap也可以跑出来。"><a href="#利用常见的宽字节注入漏洞，注意本题过滤了where子句中的-39-，可用hex编码绕过。或者直接用sqlmap也可以跑出来。" class="headerlink" title="利用常见的宽字节注入漏洞，注意本题过滤了where子句中的&#39;，可用hex编码绕过。或者直接用sqlmap也可以跑出来。"></a>利用常见的宽字节注入漏洞，注意本题过滤了where子句中的<code>&#39;</code>，可用hex编码绕过。或者直接用sqlmap也可以跑出来。</h3><h2 id="14-bypass-again"><a href="#14-bypass-again" class="headerlink" title="14.bypass again"></a>14.bypass again</h2><h3 id="此题目依旧考察php弱类型，两字符串使用-比较时均会先转型为数字，再比较。转型规则见3-md5-collision。直接使用上题的字符串即可。"><a href="#此题目依旧考察php弱类型，两字符串使用-比较时均会先转型为数字，再比较。转型规则见3-md5-collision。直接使用上题的字符串即可。" class="headerlink" title="此题目依旧考察php弱类型，两字符串使用==比较时均会先转型为数字，再比较。转型规则见3.md5 collision。直接使用上题的字符串即可。"></a>此题目依旧考察php弱类型，两字符串使用<code>==</code>比较时均会先转型为数字，再比较。转型规则见<a href="#collision">3.md5 collision</a>。直接使用上题的字符串即可。</h3><h2 id="15-变量覆盖"><a href="#15-变量覆盖" class="headerlink" title="15.变量覆盖"></a>15.变量覆盖</h2><h3 id="此题考察extract-函数的变量覆盖问题，extract-会将键名当作变量名，值作为变量的值-将变量从数组中导入到当前的符号表中。如果使用默认的EXTR-OVERWRITE模式，并将此函数用于接收用户的输入，则会导致严重的变量覆盖问题。此题中的"><a href="#此题考察extract-函数的变量覆盖问题，extract-会将键名当作变量名，值作为变量的值-将变量从数组中导入到当前的符号表中。如果使用默认的EXTR-OVERWRITE模式，并将此函数用于接收用户的输入，则会导致严重的变量覆盖问题。此题中的" class="headerlink" title="此题考察extract()函数的变量覆盖问题，extract()会将键名当作变量名，值作为变量的值,将变量从数组中导入到当前的符号表中。如果使用默认的EXTR_OVERWRITE模式，并将此函数用于接收用户的输入，则会导致严重的变量覆盖问题。此题中的"></a>此题考察<code>extract()</code>函数的变量覆盖问题，<code>extract()</code>会将键名当作变量名，值作为变量的值,将变量从数组中导入到当前的符号表中。如果使用默认的<code>EXTR_OVERWRITE</code>模式，并将此函数用于接收用户的输入，则会导致严重的变量覆盖问题。此题中的</h3><pre><code>if ($pass == $thepassword_123) &#123;
+    echo $theflag;
+&#125;
+</code></pre>
+<h3 id="就由于用户POST了pass-1-amp-thepassword-123-1而被绕过。"><a href="#就由于用户POST了pass-1-amp-thepassword-123-1而被绕过。" class="headerlink" title="就由于用户POST了pass=1&amp;thepassword_123=1而被绕过。"></a>就由于用户<code>POST</code>了<code>pass=1&amp;thepassword_123=1</code>而被绕过。</h3><h2 id="16-伪装者"><a href="#16-伪装者" class="headerlink" title="16.伪装者"></a>16.伪装者</h2><h3 id="此题提示只有本地可以访问，尝试在请求头部加client-ip-127-0-0-1和X-Forwarded-For-127-0-0-1，发现client-ip-127-0-0-1有效。"><a href="#此题提示只有本地可以访问，尝试在请求头部加client-ip-127-0-0-1和X-Forwarded-For-127-0-0-1，发现client-ip-127-0-0-1有效。" class="headerlink" title="此题提示只有本地可以访问，尝试在请求头部加client-ip: 127.0.0.1和X-Forwarded-For: 127.0.0.1，发现client-ip: 127.0.0.1有效。"></a>此题提示只有本地可以访问，尝试在请求头部加<code>client-ip: 127.0.0.1</code>和<code>X-Forwarded-For: 127.0.0.1</code>，发现<code>client-ip: 127.0.0.1</code>有效。</h3><h2 id="17-上传绕过"><a href="#17-上传绕过" class="headerlink" title="17.上传绕过"></a>17.上传绕过</h2><h3 id="此题尝试-00截断，在-uploads-后添加1-php-jpg-中间的空白需要用hex编辑为00-即能上传成功。不必修改filename-quot-1-jpg-quot-。"><a href="#此题尝试-00截断，在-uploads-后添加1-php-jpg-中间的空白需要用hex编辑为00-即能上传成功。不必修改filename-quot-1-jpg-quot-。" class="headerlink" title="此题尝试\00截断，在/uploads/后添加1.php jpg,中间的空白需要用hex编辑为00,即能上传成功。不必修改filename=&quot;1.jpg&quot;。"></a>此题尝试<code>\00</code>截断，在<code>/uploads/</code>后添加<code>1.php jpg</code>,中间的空白需要用hex编辑为<code>00</code>,即能上传成功。不必修改<code>filename=&quot;1.jpg&quot;</code>。</h3>
+<h2 id="18-SQL注入1"><a href="#18-SQL注入1" class="headerlink" title="18.SQL注入1"></a>18.SQL注入1</h2><h3 id="看源码，即可解题。"><a href="#看源码，即可解题。" class="headerlink" title="看源码，即可解题。"></a>看源码，即可解题。</h3><pre><code>user=admin%27%29%23&amp;pass=Password
+</code></pre>
+<h2 id="19-pass-check"><a href="#19-pass-check" class="headerlink" title="19.pass check"></a>19.pass check</h2><h3 id="该题目考察srtcmp-，当函数发生错误时，会显示警告并返回0。提交数组进行比较引发strcmp-报错即可。"><a href="#该题目考察srtcmp-，当函数发生错误时，会显示警告并返回0。提交数组进行比较引发strcmp-报错即可。" class="headerlink" title="该题目考察srtcmp()，当函数发生错误时，会显示警告并返回0。提交数组进行比较引发strcmp()报错即可。"></a>该题目考察<code>srtcmp()</code>，当函数发生错误时，会显示警告并返回0。提交数组进行比较引发<code>strcmp()</code>报错即可。</h3><pre><code>pass[]=
+</code></pre>
+<h3 id="注意在提交请求时要使用POST请求提交。可以直接在burp中修改请求-也可以自己在html中添加form表单，并使用POST方法提交-还可以使用firefox的hackbar插件进行POST提交。"><a href="#注意在提交请求时要使用POST请求提交。可以直接在burp中修改请求-也可以自己在html中添加form表单，并使用POST方法提交-还可以使用firefox的hackbar插件进行POST提交。" class="headerlink" title="注意在提交请求时要使用POST请求提交。可以直接在burp中修改请求;也可以自己在html中添加form表单，并使用POST方法提交;还可以使用firefox的hackbar插件进行POST提交。"></a>注意在提交请求时要使用POST请求提交。可以直接在burp中修改请求;也可以自己在html中添加form表单，并使用POST方法提交;还可以使用<code>firefox</code>的<code>hackbar</code>插件进行POST提交。</h3>
+<h2 id="20-起名字真难"><a href="#20-起名字真难" class="headerlink" title="20.起名字真难"></a>20.起名字真难</h2><h3 id="仔细阅读题目给出的源码，大意是将-GET得到的字符串按位转化为对应的ASCII码，并判断该ASCII码是否介于1～9的ASCII码之间，如果在则返回false，否则判断该字符串的值是否与54975581388相等，相等则返回true。可以想到利用16进制字符串绕过。而且54975581388的16进制恰好是0xccccccccc，该字符串的每一位都符合函数判断条件。"><a href="#仔细阅读题目给出的源码，大意是将-GET得到的字符串按位转化为对应的ASCII码，并判断该ASCII码是否介于1～9的ASCII码之间，如果在则返回false，否则判断该字符串的值是否与54975581388相等，相等则返回true。可以想到利用16进制字符串绕过。而且54975581388的16进制恰好是0xccccccccc，该字符串的每一位都符合函数判断条件。" class="headerlink" title="仔细阅读题目给出的源码，大意是将$_GET得到的字符串按位转化为对应的ASCII码，并判断该ASCII码是否介于1～9的ASCII码之间，如果在则返回false，否则判断该字符串的值是否与54975581388相等，相等则返回true。可以想到利用16进制字符串绕过。而且54975581388的16进制恰好是0xccccccccc，该字符串的每一位都符合函数判断条件。"></a>仔细阅读题目给出的源码，大意是将<code>$_GET</code>得到的字符串按位转化为对应的ASCII码，并判断该ASCII码是否介于<code>1～9</code>的ASCII码之间，如果在则返回<code>false</code>，否则判断该字符串的值是否与<code>54975581388</code>相等，相等则返回<code>true</code>。可以想到利用16进制字符串绕过。而且<code>54975581388</code>的16进制恰好是<code>0xccccccccc</code>，该字符串的每一位都符合函数判断条件。</h3><h2 id="21-密码重置"><a href="#21-密码重置" class="headerlink" title="21.密码重置"></a>21.密码重置</h2><h3 id="观察题目的URL-web13-index-php-user1-Y3RmdXNlcg-，发现Y3RmdXNlcg-为ctfuser的base64编码，故将user1的参数换为admin的base64编码，并将post的用户名修改为admin提交如下："><a href="#观察题目的URL-web13-index-php-user1-Y3RmdXNlcg-，发现Y3RmdXNlcg-为ctfuser的base64编码，故将user1的参数换为admin的base64编码，并将post的用户名修改为admin提交如下：" class="headerlink" title="观察题目的URL/web13/index.php?user1=Y3RmdXNlcg==，发现Y3RmdXNlcg==为ctfuser的base64编码，故将user1的参数换为admin的base64编码，并将post的用户名修改为admin提交如下："></a>观察题目的URL<code>/web13/index.php?user1=Y3RmdXNlcg==</code>，发现<code>Y3RmdXNlcg==</code>为<code>ctfuser</code>的base64编码，故将<code>user1</code>的参数换为<code>admin</code>的base64编码，并将post的用户名修改为<code>admin</code>提交如下：</h3>
+<h2 id="22-SQL-Injection"><a href="#22-SQL-Injection" class="headerlink" title="22.SQL Injection"></a>22.SQL Injection</h2><h3 id="通过查看页面源代码得到该题的源码，发现代码使用了stripslashes-删除用户提交的-构成的转义符号。同时使用htmlentities-str-ENT-QUOTES-将用户提交的-39-和-quot-转义为html实体。故尝试提交："><a href="#通过查看页面源代码得到该题的源码，发现代码使用了stripslashes-删除用户提交的-构成的转义符号。同时使用htmlentities-str-ENT-QUOTES-将用户提交的-39-和-quot-转义为html实体。故尝试提交：" class="headerlink" title="通过查看页面源代码得到该题的源码，发现代码使用了stripslashes()删除用户提交的\构成的转义符号。同时使用htmlentities($str, ENT_QUOTES)将用户提交的&#39;和&quot;转义为html实体。故尝试提交："></a>通过查看页面源代码得到该题的源码，发现代码使用了<code>stripslashes()</code>删除用户提交的<code>\</code>构成的转义符号。同时使用<code>htmlentities($str, ENT_QUOTES)</code>将用户提交的<code>&#39;</code>和<code>&quot;</code>转义为html实体。故尝试提交：</h3><pre><code>username=\\&amp;password=||1%23
+</code></pre>
+<h3 id="拼接后的查询语句为："><a href="#拼接后的查询语句为：" class="headerlink" title="拼接后的查询语句为："></a>拼接后的查询语句为：</h3><pre><code>SELECT * FROM users WHERE name=&#39;\&#39; AND pass=&#39;||1#&#39;;
+</code></pre>
+<h3 id="但是这样并不能成功注入，猜测是由于get-magic-quotes-gpc-返回为0-所以stripslashes-未执行，故修改为："><a href="#但是这样并不能成功注入，猜测是由于get-magic-quotes-gpc-返回为0-所以stripslashes-未执行，故修改为：" class="headerlink" title="但是这样并不能成功注入，猜测是由于get_magic_quotes_gpc()返回为0,所以stripslashes()未执行，故修改为："></a>但是这样并不能成功注入，猜测是由于<code>get_magic_quotes_gpc()</code>返回为0,所以<code>stripslashes()</code>未执行，故修改为：</h3><pre><code>username=\&amp;password=||1%23
+</code></pre>
+<h3 id="成功提交。"><a href="#成功提交。" class="headerlink" title="成功提交。"></a>成功提交。</h3><h3 id="注：查看网页源代码是个好习惯，本题中的html实体编码在普通网页中看不出来。"><a href="#注：查看网页源代码是个好习惯，本题中的html实体编码在普通网页中看不出来。" class="headerlink" title="注：查看网页源代码是个好习惯，本题中的html实体编码在普通网页中看不出来。"></a><em><strong>注：查看网页源代码是个好习惯，本题中的html实体编码在普通网页中看不出来。</strong></em></h3><h2 id="23-SQL注入2"><a href="#23-SQL注入2" class="headerlink" title="23.SQL注入2"></a>23.SQL注入2</h2><h3 id="查看php源码，发现可以使用union注入。"><a href="#查看php源码，发现可以使用union注入。" class="headerlink" title="查看php源码，发现可以使用union注入。"></a>查看php源码，发现可以使用union注入。</h3><pre><code>if (($query[pw]) &amp;&amp; (!strcasecmp($pass, $query[pw]))) &#123;
+    echo &quot;&lt;p&gt;Logged in! Key: ntcf&#123;**************&#125; &lt;/p&gt;&quot;;
+&#125;
+</code></pre>
+<h3 id="题目通过比较查询出的密码和用户输入的密码比对来验证，故可以通过union-select人为添加查询结果，并提交密码。这样两个参数均可以被控制。故提交如下："><a href="#题目通过比较查询出的密码和用户输入的密码比对来验证，故可以通过union-select人为添加查询结果，并提交密码。这样两个参数均可以被控制。故提交如下：" class="headerlink" title="题目通过比较查询出的密码和用户输入的密码比对来验证，故可以通过union select人为添加查询结果，并提交密码。这样两个参数均可以被控制。故提交如下："></a>题目通过比较查询出的密码和用户输入的密码比对来验证，故可以通过<code>union select</code>人为添加查询结果，并提交密码。这样两个参数均可以被控制。故提交如下：</h3><pre><code>user=%27union+select+md5%28%27pass%27%29 %23&amp;pass=pass
+</code></pre>
+
+<h2 id="24-综合题"><a href="#24-综合题" class="headerlink" title="24.综合题"></a>24.综合题</h2><h3 id="访问题目链接，发现是JSFuck编码，将该编码放到浏览器的console中执行，页面显示"><a href="#访问题目链接，发现是JSFuck编码，将该编码放到浏览器的console中执行，页面显示" class="headerlink" title="访问题目链接，发现是JSFuck编码，将该编码放到浏览器的console中执行，页面显示"></a>访问题目链接，发现是JSFuck编码，将该编码放到浏览器的console中执行，页面显示</h3>
+<h3 id="访问该文件"><a href="#访问该文件" class="headerlink" title="访问该文件"></a>访问该文件</h3><pre><code>/web3/b0b0ad119f425408fc3d45253137d33d/1bc29b36f623ba82aaf6724fd3b16718.php
+</code></pre>
+<h3 id="显示"><a href="#显示" class="headerlink" title="显示"></a>显示</h3>
+<h3 id="查看响应的头部发现"><a href="#查看响应的头部发现" class="headerlink" title="查看响应的头部发现"></a>查看响应的头部发现</h3>
+<h3 id="由于linux下会将历史命令保存在用户-home目录下的-bash-history中，故尝试访问该文件。"><a href="#由于linux下会将历史命令保存在用户-home目录下的-bash-history中，故尝试访问该文件。" class="headerlink" title="由于linux下会将历史命令保存在用户/home目录下的.bash_history中，故尝试访问该文件。"></a>由于linux下会将历史命令保存在用户<code>/home</code>目录下的<code>.bash_history</code>中，故尝试访问该文件。</h3><pre><code>/web3/b0b0ad119f425408fc3d45253137d33d/.bash_history
+</code></pre>
+<h3 id="找到以下历史命令："><a href="#找到以下历史命令：" class="headerlink" title="找到以下历史命令："></a>找到以下历史命令：</h3><pre><code>zip -r flagbak.zip ./*
+</code></pre>
+<h3 id="猜测该目录下存在flagbak-zip-故访问："><a href="#猜测该目录下存在flagbak-zip-故访问：" class="headerlink" title="猜测该目录下存在flagbak.zip,故访问："></a>猜测该目录下存在<code>flagbak.zip</code>,故访问：</h3><pre><code>/web3/b0b0ad119f425408fc3d45253137d33d/lagbak.zip
+</code></pre>
+<h3 id="下载解压出flag-txt-拿到flag。"><a href="#下载解压出flag-txt-拿到flag。" class="headerlink" title="下载解压出flag.txt,拿到flag。"></a>下载解压出<code>flag.txt</code>,拿到flag。</h3><h2 id="25-密码重置2"><a href="#25-密码重置2" class="headerlink" title="25.密码重置2"></a>25.密码重置2</h2><h3 id=""><a href="#" class="headerlink" title=""></a></h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2019/12/21/CG-CTF-wp/" data-id="cl9y4cx9g000q24fy20npc9gb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/24/jarvisoj-web-wp/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          jarvisoj web 题目解答
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/28/%E5%86%8D%E2%80%9C%E8%A7%81%E2%80%9Dhexo%E2%80%94%E2%80%94%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3hexo/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">再“见”hexo——重新理解hexo</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

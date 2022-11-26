@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>[FireshellCTF2020]Caas | Rock&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[FireshellCTF2020]Caas功能就是将用户提交的c源代码编译成elf可执行文件 猜测后端是将用户提交的代码保存成c源文件，然后调用系统命令gcc编译文件，如果编译报错，将命令执行的返回值返回给用户并将，如果编译成功，将输出的elf文件返回给用户。 看过wp，发现可以利用编译器的include报错读出引用文件的部分内容。 1#include &quot;&#x2F;etc&#x2F;passwd&amp;quo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[FireshellCTF2020]Caas">
+<meta property="og:url" content="https://rock718.github.io.git/2022/02/19/FireshellCTF2020-Caas/index.html">
+<meta property="og:site_name" content="Rock&#39;s blog">
+<meta property="og:description" content="[FireshellCTF2020]Caas功能就是将用户提交的c源代码编译成elf可执行文件 猜测后端是将用户提交的代码保存成c源文件，然后调用系统命令gcc编译文件，如果编译报错，将命令执行的返回值返回给用户并将，如果编译成功，将输出的elf文件返回给用户。 看过wp，发现可以利用编译器的include报错读出引用文件的部分内容。 1#include &quot;&#x2F;etc&#x2F;passwd&amp;quo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rock718.github.io.git/FireshellCTF2020-Caas/image-20220219094502839.png">
+<meta property="og:image" content="https://rock718.github.io.git/FireshellCTF2020-Caas/image-20220219094446763.png">
+<meta property="article:published_time" content="2022-02-19T01:46:18.000Z">
+<meta property="article:modified_time" content="2022-02-19T01:46:18.000Z">
+<meta property="article:author" content="Rock">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rock718.github.io.git/FireshellCTF2020-Caas/image-20220219094502839.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <!--<div id="banner"></div>-->
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-FireshellCTF2020-Caas" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      [FireshellCTF2020]Caas
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="FireshellCTF2020-Caas"><a href="#FireshellCTF2020-Caas" class="headerlink" title="[FireshellCTF2020]Caas"></a>[FireshellCTF2020]Caas</h2><p>功能就是将用户提交的c源代码编译成elf可执行文件</p>
+<p>猜测后端是将用户提交的代码保存成c源文件，然后调用系统命令gcc编译文件，如果编译报错，将命令执行的返回值返回给用户并将，如果编译成功，将输出的elf文件返回给用户。</p>
+<p>看过wp，发现可以利用编译器的include报错读出引用文件的部分内容。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;/etc/passwd&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>发现可以成功报错出部分内容</p>
+<p><img src="/FireshellCTF2020-Caas/image-20220219094502839.png" alt="image-20220219094502839"></p>
+<p>尝试</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;/flag&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/FireshellCTF2020-Caas/image-20220219094446763.png" alt="image-20220219094446763"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rock718.github.io.git/2022/02/19/FireshellCTF2020-Caas/" data-id="cl9y4cx9g000t24fy3lzm57fv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/19/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2020-Roamphp1-Welcome/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Newer</span>
+      <div class="article-nav-title">
+        
+          [极客大挑战 2020]Roamphp1-Welcome
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/17/BSidesCF-2019-SVGMagic/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-caption">Older</span>
+      <div class="article-nav-title">[BSidesCF 2019]SVGMagic</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Rock<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
+      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
