@@ -1,12 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh_cn">
 <head>
-  <meta charset="utf-8">
-  
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-  
-  <title>kali 安装 XX-Net openssl报错 | Rock&#39;s blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"rock718.github.io.git","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="XX-Net是一款开源vpn软件.通过利用GAE(Google App Engine)作为代理服务器.具体的安装方法请参照https:&#x2F;&#x2F;github.com&#x2F;XX-net&#x2F;XX-Net,上面说得很详细.但是kali或是debian的一些系统在安装时会发生一些问题.当运行start文件时会报python-openssl相关的一些错误,这主要是由于pyopenssl的版本过低,与python2.7不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="kali 安装 XX-Net openssl报错">
@@ -19,142 +32,355 @@
 <meta property="article:author" content="Rock">
 <meta property="article:tag" content="vpn">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Rock&#39;s blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&amp;subset=korean" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 6.3.0"></head>
+<link rel="canonical" href="https://rock718.github.io.git/2017/09/03/kali-XX-Net/">
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <!--<div id="banner"></div>-->
-  <div id="header-outer" class="outer">
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        <a href="/" id="main-nav-title" class="main-nav-link">Rock&#39;s blog</a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives/">Archives</a>
-        
-          <a class="main-nav-link" href="/about/">about</a>
-        
-      </nav>
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh_cn'
+  };
+</script>
+
+  <title>kali 安装 XX-Net openssl报错 | Rock's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
-</header>
 
-      <div class="outer">
-        <section id="main"><article id="post-kali-XX-Net" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rock's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">兴趣是最好的老师</p>
   </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      kali 安装 XX-Net openssl报错
-    </h1>
-  
 
-      </header>
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
     
-    <div class="article-entry" itemprop="articleBody">
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh_cn">
+    <link itemprop="mainEntityOfPage" href="https://rock718.github.io.git/2017/09/03/kali-XX-Net/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rock">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rock's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          kali 安装 XX-Net openssl报错
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2017-09-03 11:21:09 / Modified: 11:22:03" itemprop="dateCreated datePublished" datetime="2017-09-03T11:21:09+08:00">2017-09-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="XX-Net是一款开源vpn软件-通过利用GAE-Google-App-Engine-作为代理服务器-具体的安装方法请参照https-github-com-XX-net-XX-Net-上面说得很详细"><a href="#XX-Net是一款开源vpn软件-通过利用GAE-Google-App-Engine-作为代理服务器-具体的安装方法请参照https-github-com-XX-net-XX-Net-上面说得很详细" class="headerlink" title="XX-Net是一款开源vpn软件.通过利用GAE(Google App Engine)作为代理服务器.具体的安装方法请参照https://github.com/XX-net/XX-Net,上面说得很详细."></a>XX-Net是一款开源vpn软件.通过利用GAE(<a href="appengine.google.com">Google App Engine</a>)作为代理服务器.具体的安装方法请参照<a target="_blank" rel="noopener" href="https://github.com/XX-net/XX-Net">https://github.com/XX-net/XX-Net</a>,上面说得很详细.</h2><h2 id="但是kali或是debian的一些系统在安装时会发生一些问题"><a href="#但是kali或是debian的一些系统在安装时会发生一些问题" class="headerlink" title="但是kali或是debian的一些系统在安装时会发生一些问题."></a>但是kali或是debian的一些系统在安装时会发生一些问题.</h2><h2 id="当运行start文件时会报python-openssl相关的一些错误-这主要是由于pyopenssl的版本过低-与python2-7不兼容-导致无法正确导入OpenSSL包"><a href="#当运行start文件时会报python-openssl相关的一些错误-这主要是由于pyopenssl的版本过低-与python2-7不兼容-导致无法正确导入OpenSSL包" class="headerlink" title="当运行start文件时会报python-openssl相关的一些错误,这主要是由于pyopenssl的版本过低,与python2.7不兼容.导致无法正确导入OpenSSL包."></a>当运行start文件时会报python-openssl相关的一些错误,这主要是由于pyopenssl的版本过低,与python2.7不兼容.导致无法正确导入OpenSSL包.</h2><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案 :"></a>解决方案 :</h2><pre><code>pip uninstall pyopenssl
 pip install pyopenssl
 </code></pre>
 <h2 id="升级后的pyopenssl版本应为16-2-0"><a href="#升级后的pyopenssl版本应为16-2-0" class="headerlink" title="升级后的pyopenssl版本应为16.2.0"></a>升级后的pyopenssl版本应为16.2.0</h2>
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="https://rock718.github.io.git/2017/09/03/kali-XX-Net/" data-id="cl9y4cx9k001u24fy2w256n1c" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vpn/" rel="tag">vpn</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/vpn/" rel="tag"># vpn</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/08/14/xss-game-writeup/" rel="prev" title="google xss-game 题目解答">
+      <i class="fa fa-chevron-left"></i> google xss-game 题目解答
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/09/16/WebForPentester-XSS/" rel="next" title="WebForPentester_XSS">
+      WebForPentester_XSS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XX-Net%E6%98%AF%E4%B8%80%E6%AC%BE%E5%BC%80%E6%BA%90vpn%E8%BD%AF%E4%BB%B6-%E9%80%9A%E8%BF%87%E5%88%A9%E7%94%A8GAE-Google-App-Engine-%E4%BD%9C%E4%B8%BA%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8-%E5%85%B7%E4%BD%93%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95%E8%AF%B7%E5%8F%82%E7%85%A7https-github-com-XX-net-XX-Net-%E4%B8%8A%E9%9D%A2%E8%AF%B4%E5%BE%97%E5%BE%88%E8%AF%A6%E7%BB%86"><span class="nav-number">1.</span> <span class="nav-text">XX-Net是一款开源vpn软件.通过利用GAE(Google App Engine)作为代理服务器.具体的安装方法请参照https:&#x2F;&#x2F;github.com&#x2F;XX-net&#x2F;XX-Net,上面说得很详细.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%86%E6%98%AFkali%E6%88%96%E6%98%AFdebian%E7%9A%84%E4%B8%80%E4%BA%9B%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%AE%89%E8%A3%85%E6%97%B6%E4%BC%9A%E5%8F%91%E7%94%9F%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">但是kali或是debian的一些系统在安装时会发生一些问题.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%93%E8%BF%90%E8%A1%8Cstart%E6%96%87%E4%BB%B6%E6%97%B6%E4%BC%9A%E6%8A%A5python-openssl%E7%9B%B8%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E9%94%99%E8%AF%AF-%E8%BF%99%E4%B8%BB%E8%A6%81%E6%98%AF%E7%94%B1%E4%BA%8Epyopenssl%E7%9A%84%E7%89%88%E6%9C%AC%E8%BF%87%E4%BD%8E-%E4%B8%8Epython2-7%E4%B8%8D%E5%85%BC%E5%AE%B9-%E5%AF%BC%E8%87%B4%E6%97%A0%E6%B3%95%E6%AD%A3%E7%A1%AE%E5%AF%BC%E5%85%A5OpenSSL%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">当运行start文件时会报python-openssl相关的一些错误,这主要是由于pyopenssl的版本过低,与python2.7不兼容.导致无法正确导入OpenSSL包.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">4.</span> <span class="nav-text">解决方案 :</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7%E5%90%8E%E7%9A%84pyopenssl%E7%89%88%E6%9C%AC%E5%BA%94%E4%B8%BA16-2-0"><span class="nav-number">5.</span> <span class="nav-text">升级后的pyopenssl版本应为16.2.0</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rock</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rock</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/09/16/WebForPentester-XSS/" id="article-nav-newer" class="article-nav-link-wrap">
-      <span class="article-nav-caption">Newer</span>
-      <div class="article-nav-title">
-        
-          WebForPentester_XSS
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/08/14/xss-game-writeup/" id="article-nav-older" class="article-nav-link-wrap">
-      <span class="article-nav-caption">Older</span>
-      <div class="article-nav-title">google xss-game 题目解答</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
-</section>
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2022 Rock<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> with 
-      theme_by <a href="http://hexo.io/" target="_blank">mango</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives/" class="mobile-nav-link">Archives</a>
-  
-    <a href="/about/" class="mobile-nav-link">about</a>
-  
-</nav>
-    
+<script src="/js/utils.js"></script>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
 
+  
 
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-  </div>
 </body>
 </html>
